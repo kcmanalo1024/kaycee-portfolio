@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tubaland — Case Study | Kaycee Manalo</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* =========================================================
+   TUBALAND CASE STUDY — PREMIUM CASE STUDY UI
+   Portfolio-wide files are not touched by this page.
+   ========================================================= */
+:root{--tb-bg:#060708;--tb-panel:#0d0f10;--tb-panel2:#111415;--tb-text:#f4f5ef;--tb-muted:#8e928e;--tb-soft:#666b67;--tb-line:rgba(255,255,255,.10);--tb-lime:#c9ff38;--tb-blue:#63b8ff;--tb-radius:28px}
+.tb-page{background:radial-gradient(900px 600px at 80% -10%,rgba(201,255,56,.08),transparent 65%),radial-gradient(800px 600px at -15% 35%,rgba(65,137,255,.08),transparent 65%),#060708;color:var(--tb-text)}
+.tb-page:before{opacity:.018}
+.tb-header{position:fixed!important;background:linear-gradient(180deg,rgba(6,7,8,.88),rgba(6,7,8,.35));backdrop-filter:blur(16px);border-bottom:1px solid transparent;transition:.3s}
+.tb-header.scrolled{border-bottom-color:var(--tb-line)}
+.tb-nav{height:76px;width:min(1240px,calc(100% - 44px));margin:auto;display:flex;align-items:center;justify-content:space-between}
+.tb-brand{font-weight:900;text-decoration:none;letter-spacing:-.08em;font-size:1.15rem}.tb-brand span{color:var(--tb-lime)}
+.tb-back{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--tb-line);border-radius:999px;padding:10px 15px;color:#d8dad5;text-decoration:none;font:10px "DM Mono",monospace;letter-spacing:.08em;text-transform:uppercase;transition:.25s}.tb-back:hover{border-color:var(--tb-lime);color:var(--tb-lime)}
+.tb-container{width:min(1240px,calc(100% - 44px));margin:auto}
+.tb-hero{min-height:92vh;display:flex;align-items:flex-end;padding:150px 0 92px;position:relative;overflow:hidden}
+.tb-hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:80px;align-items:end;width:100%}
+.tb-eyebrow{font:10px "DM Mono",monospace;letter-spacing:.18em;text-transform:uppercase;color:#858a85}.tb-title{font-size:clamp(5rem,12vw,10.8rem);line-height:.78;letter-spacing:-.095em;margin:24px 0 30px;font-weight:800}.tb-title span{color:var(--tb-lime)}
+.tb-intro{max-width:680px;color:#aeb2ad;line-height:1.85;font-size:1rem}.tb-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:28px}.tb-tag{border:1px solid var(--tb-line);border-radius:999px;padding:8px 11px;color:#9da19d;font:9px "DM Mono",monospace;letter-spacing:.06em}
+.tb-hero-side{border-left:1px solid var(--tb-line);padding-left:30px;padding-bottom:4px}.tb-hero-side .tb-stat{padding:16px 0;border-top:1px solid var(--tb-line)}.tb-hero-side .tb-stat:first-child{border-top:0}.tb-stat small{display:block;color:#666b67;font:9px "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;margin-bottom:7px}.tb-stat strong{font-size:1.02rem;font-weight:500;color:#e9ebe6}.tb-hero-link{margin-top:25px;display:inline-flex;color:var(--tb-lime);text-decoration:none;font-weight:700;font-size:.78rem}.tb-hero-orb{position:absolute;width:520px;height:520px;border-radius:50%;right:-220px;top:120px;background:radial-gradient(circle,rgba(201,255,56,.13),transparent 68%);pointer-events:none}
+.tb-section{padding:112px 0;border-top:1px solid rgba(255,255,255,.07)}.tb-section-tight{padding-top:84px}.tb-section-head{display:grid;grid-template-columns:.48fr 1.52fr;gap:55px;margin-bottom:54px}.tb-index{font:10px "DM Mono",monospace;color:#777c78;letter-spacing:.15em;text-transform:uppercase}.tb-index b{color:var(--tb-lime);font-weight:500}.tb-heading{font-size:clamp(2.4rem,5vw,5.4rem);line-height:.9;letter-spacing:-.065em;margin:0;max-width:850px}.tb-copy{font-size:.93rem;line-height:1.9;color:#919691;max-width:780px}.tb-copy strong{color:#dfe2dc;font-weight:500}
+.tb-overview{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:38px}.tb-overview-card{min-height:220px;border:1px solid var(--tb-line);border-radius:var(--tb-radius);padding:27px;background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.012));position:relative;overflow:hidden}.tb-overview-card:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-80px;bottom:-90px;background:rgba(201,255,56,.08)}.tb-overview-card span{font:9px "DM Mono",monospace;color:var(--tb-lime);letter-spacing:.13em}.tb-overview-card h3{font-size:1.35rem;margin:28px 0 10px;letter-spacing:-.035em}.tb-overview-card p{font-size:.78rem;line-height:1.75;color:#858a85;max-width:430px}
+
+.tb-proto-wrap{display:grid;gap:18px}.tb-proto-row{display:grid;grid-template-columns:90px 1fr 1fr;gap:22px;align-items:center;border:1px solid var(--tb-line);border-radius:26px;padding:22px;background:linear-gradient(145deg,#0e1011,#090a0b);position:relative;overflow:hidden}.tb-proto-row:before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(201,255,56,.035),transparent 35%,transparent 65%,rgba(99,184,255,.035));pointer-events:none}.tb-proto-label{position:relative;z-index:1}.tb-proto-label b{display:block;color:var(--tb-lime);font:10px "DM Mono",monospace;letter-spacing:.12em}.tb-proto-label span{display:block;margin-top:9px;color:#777c78;font:9px "DM Mono",monospace;text-transform:uppercase;line-height:1.5}.tb-proto-card{position:relative;z-index:1;min-height:500px;border:1px solid rgba(255,255,255,.09);border-radius:20px;background:#08090a;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;overflow:hidden}.tb-proto-card:after{content:"";position:absolute;inset:auto 15% -45% 15%;height:50%;border-radius:50%;background:rgba(201,255,56,.06);filter:blur(35px)}.tb-proto-card button{border:0;background:none;padding:0;cursor:zoom-in;display:flex;justify-content:center;align-items:center;width:100%;height:100%}.tb-proto-card img{height:455px;max-width:100%;width:auto;object-fit:contain;border-radius:18px;border:1px solid rgba(255,255,255,.10);box-shadow:0 28px 65px rgba(0,0,0,.55);transition:.3s}.tb-proto-card button:hover img{transform:translateY(-5px);border-color:rgba(201,255,56,.55)}.tb-proto-meta{display:flex;align-items:center;justify-content:space-between;width:100%;padding:13px 3px 0;color:#676c68;font:9px "DM Mono",monospace;letter-spacing:.09em;text-transform:uppercase}.tb-proto-meta strong{color:#dfe2dc;font-weight:500}.tb-after .tb-proto-meta strong{color:var(--tb-lime)}
+
+.tb-process{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--tb-line);border:1px solid var(--tb-line);border-radius:24px;overflow:hidden;margin-top:38px}.tb-process-item{background:#0a0c0d;padding:24px;min-height:170px}.tb-process-item b{color:var(--tb-lime);font:10px "DM Mono",monospace}.tb-process-item h3{font-size:1rem;margin:25px 0 8px}.tb-process-item p{font-size:.72rem;line-height:1.7;color:#777c78;margin:0}
+
+.tb-tech{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:35px}.tb-tech-item{border:1px solid var(--tb-line);border-radius:20px;padding:22px;background:#0a0c0d}.tb-tech-item span{font:9px "DM Mono",monospace;color:#666b67;text-transform:uppercase;letter-spacing:.12em}.tb-tech-item b{display:block;margin-top:13px;font-size:1rem;font-weight:500}.tb-tech-item p{color:#777c78;font-size:.7rem;line-height:1.6;margin:7px 0 0}
+
+.tb-feature-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;align-items:stretch}.tb-feature{grid-column:span 2;border:1px solid var(--tb-line);border-radius:25px;background:linear-gradient(145deg,#101213,#090a0b);padding:20px;display:flex;flex-direction:column;min-width:0;transition:.3s}.tb-feature:nth-child(4),.tb-feature:nth-child(5){grid-column:span 3}.tb-feature:nth-child(6){grid-column:span 6}.tb-feature:hover{transform:translateY(-5px);border-color:rgba(201,255,56,.35);box-shadow:0 28px 80px rgba(0,0,0,.35)}.tb-feature-top{display:flex;justify-content:space-between;gap:12px;align-items:center}.tb-feature-no{font:9px "DM Mono",monospace;color:var(--tb-lime);letter-spacing:.1em}.tb-feature-type{font:8px "DM Mono",monospace;color:#656a66;text-transform:uppercase;letter-spacing:.1em}.tb-feature-media{height:370px;display:flex;justify-content:center;align-items:center;margin:17px 0 22px;border-radius:19px;background:radial-gradient(circle at 50% 30%,rgba(255,255,255,.06),transparent 58%),#08090a;overflow:hidden}.tb-feature-media img{height:330px;width:auto;max-width:88%;object-fit:contain;border-radius:15px;border:1px solid rgba(255,255,255,.10);box-shadow:0 22px 55px rgba(0,0,0,.55);cursor:zoom-in;transition:.3s}.tb-feature:hover .tb-feature-media img{transform:scale(1.015)}.tb-feature h3{font-size:1.1rem;margin:0 0 8px;letter-spacing:-.025em}.tb-feature p{font-size:.72rem;line-height:1.7;color:#7d827e;margin:0}.tb-feature-wide .tb-feature-media{height:330px}.tb-feature-wide .tb-feature-media img{width:92%;height:auto;max-width:1100px;max-height:285px;object-fit:contain}
+
+.tb-manual{margin-top:28px;border:1px solid rgba(201,255,56,.25);border-radius:28px;padding:30px;background:radial-gradient(circle at 85% 20%,rgba(201,255,56,.10),transparent 38%),linear-gradient(145deg,#111512,#090b0b);display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center}.tb-manual-kicker{font:9px "DM Mono",monospace;color:var(--tb-lime);letter-spacing:.14em;text-transform:uppercase}.tb-manual h3{font-size:1.65rem;letter-spacing:-.04em;margin:10px 0 7px}.tb-manual p{color:#7e837f;font-size:.76rem;line-height:1.7;max-width:680px;margin:0}.tb-manual a{display:inline-flex;align-items:center;gap:9px;padding:13px 17px;border-radius:999px;background:var(--tb-lime);color:#090a08;text-decoration:none;font-weight:800;font-size:.72rem;white-space:nowrap;transition:.25s}.tb-manual a:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(201,255,56,.15)}
+.tb-learning{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:36px}.tb-learning-card{border:1px solid var(--tb-line);border-radius:25px;padding:28px;background:#0a0c0d}.tb-learning-card span{font:9px "DM Mono",monospace;color:#666b67;text-transform:uppercase;letter-spacing:.12em}.tb-learning-card h3{font-size:1.55rem;letter-spacing:-.04em;margin:24px 0 10px}.tb-learning-card p{font-size:.78rem;line-height:1.8;color:#7e837f;margin:0}
+.tb-footer{padding:90px 0 45px;border-top:1px solid var(--tb-line);text-align:center}.tb-footer h2{font-size:clamp(3.4rem,8vw,8rem);letter-spacing:-.08em;line-height:.8;margin:0}.tb-footer h2 span{color:var(--tb-lime)}.tb-footer p{color:#666b67;font-size:.72rem;margin-top:25px}
+
+#tb-lightbox{position:fixed;inset:0;z-index:100;background:rgba(2,3,3,.94);backdrop-filter:blur(14px);display:none;align-items:center;justify-content:center;padding:30px}#tb-lightbox.open{display:flex}#tb-lightbox img{max-width:92vw;max-height:88vh;object-fit:contain;border-radius:18px;border:1px solid rgba(255,255,255,.16);box-shadow:0 40px 120px #000}.tb-lb-close{position:absolute;right:24px;top:20px;width:44px;height:44px;border:1px solid rgba(255,255,255,.15);border-radius:50%;background:#101213;color:#fff;font-size:24px;cursor:pointer}.tb-lb-close:hover{border-color:var(--tb-lime);color:var(--tb-lime)}.tb-lb-label{position:absolute;left:28px;top:28px;font:9px "DM Mono",monospace;color:#858a85;letter-spacing:.13em;text-transform:uppercase}
+.tb-reveal{opacity:0;transform:translateY(18px);transition:opacity .65s ease,transform .65s ease}.tb-reveal.visible{opacity:1;transform:none}
+@media(max-width:980px){.tb-hero-grid,.tb-section-head{grid-template-columns:1fr;gap:28px}.tb-hero-side{border-left:0;border-top:1px solid var(--tb-line);padding:18px 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.tb-hero-side .tb-stat{border-top:0;padding:0}.tb-overview{grid-template-columns:1fr}.tb-proto-row{grid-template-columns:60px 1fr 1fr}.tb-proto-card{min-height:440px}.tb-proto-card img{height:395px}.tb-process{grid-template-columns:repeat(2,1fr)}.tb-tech{grid-template-columns:repeat(2,1fr)}.tb-feature-grid{grid-template-columns:repeat(2,1fr)}.tb-feature,.tb-feature:nth-child(4),.tb-feature:nth-child(5),.tb-feature:nth-child(6){grid-column:span 1}.tb-feature:nth-child(6){grid-column:1/-1}}
+@media(max-width:640px){.tb-container,.tb-nav{width:calc(100% - 28px)}.tb-hero{min-height:auto;padding:130px 0 70px}.tb-title{font-size:clamp(4rem,19vw,6.4rem)}.tb-hero-side{grid-template-columns:1fr 1fr}.tb-section{padding:80px 0}.tb-section-head{margin-bottom:35px}.tb-proto-row{grid-template-columns:1fr;padding:17px}.tb-proto-label{display:flex;align-items:center;gap:12px}.tb-proto-label span{margin:0}.tb-proto-card{min-height:400px}.tb-proto-card img{height:355px}.tb-process,.tb-tech,.tb-feature-grid,.tb-learning{grid-template-columns:1fr}.tb-feature,.tb-feature:nth-child(6){grid-column:1}.tb-feature-media{height:350px}.tb-feature-wide .tb-feature-media{height:250px}.tb-manual{grid-template-columns:1fr}.tb-manual a{justify-self:start}.tb-footer{padding-bottom:30px}}
+
+/* HERO V2 — cleaner editorial project intro */
+.tb-hero-v2{min-height:100svh;padding:120px 0 64px;display:flex;align-items:center;position:relative;overflow:hidden}
+.tb-hero-v2 .tb-hero-orb{width:720px;height:720px;right:-300px;top:40px;background:radial-gradient(circle,rgba(201,255,56,.14),rgba(201,255,56,.035) 30%,transparent 68%)}
+.tb-hero-v2-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(310px,.75fr);gap:72px;align-items:end;position:relative;z-index:1}
+.tb-hero-main{max-width:850px}
+.tb-hero-kicker{display:flex;align-items:center;gap:12px;color:#8b908b;font:9px "DM Mono",monospace;letter-spacing:.18em;text-transform:uppercase}
+.tb-hero-kicker:before{content:"";width:34px;height:1px;background:var(--tb-lime)}
+.tb-hero-v2 .tb-title{font-size:clamp(5.5rem,12.5vw,12rem);line-height:.78;letter-spacing:-.105em;margin:30px 0 38px}
+.tb-hero-description{font-size:clamp(1rem,1.5vw,1.25rem);line-height:1.75;color:#aeb2ad;max-width:690px;margin:0}
+.tb-hero-bottom{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:34px}
+.tb-play-btn{display:inline-flex;align-items:center;gap:11px;padding:13px 17px;border-radius:999px;background:var(--tb-lime);color:#080a07;text-decoration:none;font-size:.72rem;font-weight:800;transition:transform .25s,box-shadow .25s}
+.tb-play-btn:hover{transform:translateY(-2px);box-shadow:0 15px 40px rgba(201,255,56,.16)}
+.tb-play-btn svg{width:14px;height:14px}
+.tb-hero-tags{display:flex;gap:7px;flex-wrap:wrap}
+.tb-hero-tags .tb-tag{padding:9px 11px}
+.tb-hero-details{border:1px solid var(--tb-line);border-radius:28px;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.015));padding:9px;box-shadow:0 30px 100px rgba(0,0,0,.22)}
+.tb-detail{padding:20px 21px;border-bottom:1px solid var(--tb-line)}
+.tb-detail:last-child{border-bottom:0}
+.tb-detail-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;color:#626762;font:8px "DM Mono",monospace;letter-spacing:.15em;text-transform:uppercase}
+.tb-detail-label i{display:block;width:5px;height:5px;border-radius:50%;background:var(--tb-lime);box-shadow:0 0 12px rgba(201,255,56,.55)}
+.tb-detail-value{display:block;color:#e8ebe5;font-size:1rem;font-weight:500;line-height:1.45}
+.tb-hero-scroll{display:flex;align-items:center;gap:10px;margin-top:55px;color:#626762;font:8px "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase}
+.tb-hero-scroll:before{content:"";width:42px;height:1px;background:var(--tb-line)}
+@media(max-width:980px){.tb-hero-v2{min-height:auto;padding:135px 0 80px}.tb-hero-v2-grid{grid-template-columns:1fr;gap:48px}.tb-hero-details{display:grid;grid-template-columns:repeat(3,1fr);padding:0}.tb-detail{padding:18px 20px;border-bottom:0;border-right:1px solid var(--tb-line)}.tb-detail:last-child{border-right:0}.tb-hero-scroll{margin-top:40px}}
+@media(max-width:640px){.tb-hero-v2{padding:120px 0 65px}.tb-hero-v2 .tb-title{font-size:clamp(4.4rem,21vw,6.8rem);margin:25px 0 28px}.tb-hero-description{font-size:.95rem;line-height:1.8}.tb-hero-details{grid-template-columns:1fr}.tb-detail{border-right:0;border-bottom:1px solid var(--tb-line)}.tb-detail:last-child{border-bottom:0}.tb-hero-bottom{align-items:flex-start;flex-direction:column}.tb-hero-tags{width:100%}}
+</style>
+</head>
+<body class="case-page tb-page">
+<header id="site-header" class="tb-header"><div class="tb-nav"><a href="index.html" class="brand">keysi<span>madeit</span><b>®</b></a><a href="index.html#work" class="tb-back">Back to portfolio ↗</a></div></header>
+
+<main>
+<section class="tb-hero tb-hero-v2"><div class="tb-hero-orb"></div><div class="tb-container tb-hero-v2-grid tb-reveal">
+  <div class="tb-hero-main">
+    <p class="tb-hero-kicker">CAPSTONE PROJECT · 2025–2026</p>
+    <h1 class="tb-title">Tubaland<span>.</span></h1>
+    <p class="tb-hero-description">A laundry management application designed to make booking, order management, pickup &amp; delivery, and payment verification more convenient.</p>
+    <div class="tb-hero-bottom">
+      <a class="tb-play-btn" href="https://play.google.com/store/search?q=Tubaland&c=apps" target="_blank" rel="noopener">View on Google Play <span>↗</span></a>
+      <div class="tb-hero-tags"><span class="tb-tag">UI/UX DESIGN</span><span class="tb-tag">ANDROID</span><span class="tb-tag">JAVA</span><span class="tb-tag">GOOGLE MAPS</span></div>
+    </div>
+    <div class="tb-hero-scroll">Scroll to explore the case study</div>
+  </div>
+  <aside class="tb-hero-details" aria-label="Project details">
+    <div class="tb-detail"><div class="tb-detail-label"><span>Role</span><i></i></div><strong class="tb-detail-value">UI/UX Designer · Front-end</strong></div>
+    <div class="tb-detail"><div class="tb-detail-label"><span>Platform</span><i></i></div><strong class="tb-detail-value">Android app + web admin</strong></div>
+    <div class="tb-detail"><div class="tb-detail-label"><span>Focus</span><i></i></div><strong class="tb-detail-value">Booking · Tracking · Payments</strong></div>
+  </aside>
+</div></section>
+
+<section class="tb-section tb-reveal"><div class="tb-container">
+  <div class="tb-section-head"><div class="tb-index"><b>01</b> — OVERVIEW</div><div><h2 class="tb-heading">From a manual laundry workflow to a digital experience.</h2><p class="tb-copy" style="margin-top:25px">Tubaland is a capstone laundry management application combining a customer-facing Android application with a web-based administrative interface to support laundry services and transactions.</p><p class="tb-copy" style="margin-top:14px">My primary contribution was the UI/UX design and front-end development of the application. I worked on user flows, wireframes, interface layouts, visual design, and translating approved designs into functional Android screens.</p></div></div>
+  <div class="tb-overview">
+    <article class="tb-overview-card"><span>01 / CUSTOMER</span><h3>Book with less friction.</h3><p>Service selection, add-ons, pickup and delivery options, scheduling, and payment are brought into one guided booking flow.</p></article>
+    <article class="tb-overview-card"><span>02 / OPERATIONS</span><h3>Keep the workflow connected.</h3><p>The admin side supports operational visibility while location-based functionality helps connect pickup and delivery activities.</p></article>
+  </div>
+</div></section>
+
+<section class="tb-section tb-reveal"><div class="tb-container">
+  <div class="tb-section-head"><div class="tb-index"><b>02</b> — SELECTED PROTOTYPES</div><div><h2 class="tb-heading">Prototype decisions, then the implemented interface.</h2><p class="tb-copy" style="margin-top:22px">A focused before-and-after view of three selected screens. The six frames are intentionally kept consistent so the finished screenshots can be dropped in without changing the layout.</p></div></div>
+  <div class="tb-proto-wrap">
+    <div class="tb-proto-row"><div class="tb-proto-label"><b>01</b><span>Login</span></div><figure class="tb-proto-card"><button data-tb-lightbox="assets/images/tubaland-prototype-1.jpg" aria-label="View Tubaland prototype 1"><img src="assets/images/tubaland-prototype-1.jpg" alt="Tubaland prototype 1"><span class="tb-proto-meta"><strong>Before</strong><span>Prototype</span></span></button></figure><figure class="tb-proto-card tb-after"><button data-tb-lightbox="assets/images/tubaland-after-1.png" aria-label="View Tubaland after screen 1"><img src="assets/images/tubaland-after-1.png" alt="Tubaland implemented screen 1"><span class="tb-proto-meta"><strong>After</strong><span>Implemented</span></span></button></figure></div>
+    <div class="tb-proto-row"><div class="tb-proto-label"><b>02</b><span>Dashboard</span></div><figure class="tb-proto-card"><button data-tb-lightbox="assets/images/tubaland-prototype-2.jpg" aria-label="View Tubaland prototype 2"><img src="assets/images/tubaland-prototype-2.jpg" alt="Tubaland prototype 2"><span class="tb-proto-meta"><strong>Before</strong><span>Prototype</span></span></button></figure><figure class="tb-proto-card tb-after"><button data-tb-lightbox="assets/images/tubaland-after-2.png" aria-label="View Tubaland after screen 2"><img src="assets/images/tubaland-after-2.png" alt="Tubaland implemented screen 2"><span class="tb-proto-meta"><strong>After</strong><span>Implemented</span></span></button></figure></div>
+    <div class="tb-proto-row"><div class="tb-proto-label"><b>03</b><span>Booking</span></div><figure class="tb-proto-card"><button data-tb-lightbox="assets/images/tubaland-prototype-3.jpg" aria-label="View Tubaland prototype 3"><img src="assets/images/tubaland-prototype-3.jpg" alt="Tubaland prototype 3"><span class="tb-proto-meta"><strong>Before</strong><span>Prototype</span></span></button></figure><figure class="tb-proto-card tb-after"><button data-tb-lightbox="assets/images/tubaland-after-3.png" aria-label="View Tubaland after screen 3"><img src="assets/images/tubaland-after-3.png" alt="Tubaland implemented screen 3"><span class="tb-proto-meta"><strong>After</strong><span>Implemented</span></span></button></figure></div>
+  </div>
+</div></section>
+
+<section class="tb-section tb-reveal"><div class="tb-container">
+  <div class="tb-section-head"><div class="tb-index"><b>03</b> — MY CONTRIBUTION</div><div><h2 class="tb-heading">Designing the experience and helping turn it into a working product.</h2></div></div>
+  <div class="tb-process">
+    <article class="tb-process-item"><b>01</b><h3>UI / UX Design</h3><p>User flows, wireframes, layouts, and visual design across the mobile and admin interfaces.</p></article>
+    <article class="tb-process-item"><b>02</b><h3>Front-end Development</h3><p>Developed core Android application interfaces using Java and Android Studio.</p></article>
+    <article class="tb-process-item"><b>03</b><h3>Feature Integration</h3><p>Worked with Google Maps SDK for location-based laundry pickup and delivery functionality.</p></article>
+    <article class="tb-process-item"><b>04</b><h3>Team Collaboration</h3><p>Collaborated through GitHub and Trello for version control, tasks, and feature tracking.</p></article>
+  </div>
+</div></section>
+
+<section class="tb-section tb-reveal"><div class="tb-container">
+  <div class="tb-section-head"><div class="tb-index"><b>04</b> — DESIGN PROCESS</div><div><h2 class="tb-heading">Concept → User Flow → Wireframes → UI Design → Prototype → Development → Testing</h2><p class="tb-copy" style="margin-top:24px">Our team studied the existing laundry workflow through on-site visits, interviews with the laundry shop owner, and observation. I used those findings to shape the navigation and interface structure before development.</p></div></div>
+  <div class="tb-tech">
+    <article class="tb-tech-item"><span>01 / Android</span><b>Java · Android Studio</b><p>Customer-facing mobile experience.</p></article>
+    <article class="tb-tech-item"><span>02 / Web</span><b>HTML · CSS · JavaScript</b><p>Administrative interface.</p></article>
+    <article class="tb-tech-item"><span>03 / Backend</span><b>Node.js</b><p>Application services.</p></article>
+    <article class="tb-tech-item"><span>04 / Database</span><b>MySQL</b><p>Application data.</p></article>
+    <article class="tb-tech-item"><span>05 / Integration</span><b>Google Maps SDK</b><p>Location-based functionality.</p></article>
+    <article class="tb-tech-item"><span>06 / Collaboration</span><b>GitHub · Trello</b><p>Version control and task tracking.</p></article>
+  </div>
+</div></section>
+
+<section class="tb-section tb-reveal"><div class="tb-container">
+  <div class="tb-section-head"><div class="tb-index"><b>05</b> — TECHNOLOGY</div><div><h2 class="tb-heading">A connected stack for a connected workflow.</h2></div></div>
+  <div class="tb-copy">Tubaland brings together the Android customer experience and web-based administration layer, supported by application services, a database, and location functionality.</div>
+</div></section>
+
+<section class="tb-section tb-section-tight tb-reveal"><div class="tb-container">
+  <div class="tb-section-head"><div class="tb-index"><b>06</b> — KEY FEATURES</div><div><h2 class="tb-heading">Six moments that define the Tubaland experience.</h2><p class="tb-copy" style="margin-top:22px">Each feature is shown through one focused screen. The first five use a phone-sized presentation; the final feature uses the horizontal admin website layout.</p></div></div>
+  <div class="tb-feature-grid">
+    <article class="tb-feature"><div class="tb-feature-top"><span class="tb-feature-no">01</span><span class="tb-feature-type">Mobile</span></div><div class="tb-feature-media"><img data-tb-lightbox="assets/images/tubaland-feature-1.png" src="assets/images/tubaland-feature-1.png" alt="Tubaland Notifications"></div><h3>Notifications</h3><p>Customers receive updates regarding their laundry service.</p></article>
+    <article class="tb-feature"><div class="tb-feature-top"><span class="tb-feature-no">02</span><span class="tb-feature-type">Mobile</span></div><div class="tb-feature-media"><img data-tb-lightbox="assets/images/tubaland-feature-2.png" src="assets/images/tubaland-feature-2.png" alt="Tubaland Laundry Booking"></div><h3>Laundry Booking</h3><p>Customers can book and manage laundry services through the mobile application.</p></article>
+    <article class="tb-feature"><div class="tb-feature-top"><span class="tb-feature-no">03</span><span class="tb-feature-type">Mobile</span></div><div class="tb-feature-media"><img data-tb-lightbox="assets/images/tubaland-feature-3.png" src="assets/images/tubaland-feature-3.png" alt="Tubaland Order Tracking"></div><h3>Order Tracking</h3><p>Customers can follow the status of their laundry order.</p></article>
+    <article class="tb-feature"><div class="tb-feature-top"><span class="tb-feature-no">04</span><span class="tb-feature-type">Mobile</span></div><div class="tb-feature-media"><img data-tb-lightbox="assets/images/tubaland-feature-4.png" src="assets/images/tubaland-feature-4.png" alt="Tubaland Rider and Delivery Tracking"></div><h3>Rider / Delivery Tracking</h3><p>Location-based functionality supports pickup and delivery tracking.</p></article>
+    <article class="tb-feature"><div class="tb-feature-top"><span class="tb-feature-no">05</span><span class="tb-feature-type">Mobile</span></div><div class="tb-feature-media"><img data-tb-lightbox="assets/images/tubaland-feature-5.png" src="assets/images/tubaland-feature-5.png" alt="Tubaland GCash Payment Verification"></div><h3>GCash Payment Verification</h3><p>Customers can pay using GCash and upload proof of payment for administrator verification.</p></article>
+    <article class="tb-feature tb-feature-wide"><div class="tb-feature-top"><span class="tb-feature-no">06</span><span class="tb-feature-type">Web Admin</span></div><div class="tb-feature-media"><img data-tb-lightbox="assets/images/tubaland-feature-6.png" src="assets/images/tubaland-feature-6.png" alt="Tubaland Admin Management website"></div><h3>Admin Management</h3><p>Administrators can manage orders, customers, and operational activities through the web interface.</p></article>
+  </div>
+</div></section>
+
+<section class="tb-section tb-reveal"><div class="tb-container">
+  <div class="tb-section-head"><div class="tb-index"><b>07</b> — CHALLENGES & LEARNING</div><div><h2 class="tb-heading">Designing for multiple roles taught me to think beyond the screen.</h2></div></div>
+  <div class="tb-learning"><article class="tb-learning-card"><span>Challenge</span><h3>One product, different responsibilities.</h3><p>Tubaland required different experiences for customers, riders, and administrators. A key challenge was maintaining consistency between the prototype and the implemented Android interface while working within technical constraints.</p></article><article class="tb-learning-card"><span>Learning</span><h3>Good interfaces connect systems.</h3><p>The project strengthened my understanding of how UI/UX, development, databases, location-based functionality, testing, and collaboration connect to create a complete digital product.</p></article></div>
+</div></section>
+
+<section class="tb-section tb-reveal"><div class="tb-container">
+  <div class="tb-section-head"><div class="tb-index"><b>08</b> — REFLECTION</div><div><h2 class="tb-heading">Good design is not only about looking good. It has to work.</h2><p class="tb-copy" style="margin-top:24px">Tubaland allowed me to combine my interest in design with my technical background in Information Technology. From the first user flow to the functional application, I learned to consider both what users need and what developers can realistically build.</p></div></div>
+  <div class="tb-manual"><div><div class="tb-manual-kicker">TUBALAND DOCUMENTATION</div><h3>User Manual</h3><p>The official Tubaland User Guide covers installation, login and account management, dashboard navigation, and the different laundry booking flows.</p></div><a href="documents/Tubaland-User-Manual.pdf" target="_blank" rel="noopener">Open User Manual PDF ↗</a></div>
+  <div class="tb-copy" style="margin-top:26px">Source code: Private repository due to project confidentiality.<br>Prototype: Selected screens only; the complete design file is not publicly available.</div>
+</div></section>
+
+<footer class="tb-footer">
+    <div class="tb-container">
+        <div class="tb-footer-top">
+            <span class="tb-footer-label">CASE STUDY · TUBALAND</span>
+            <span class="tb-footer-number">08</span>
+        </div>
+
+        <h2>
+            Thanks for<br>
+            exploring <span>Tubaland.</span>
+        </h2>
+
+        <div class="tb-footer-bottom">
+            <p>Kaycee Manalo · Case Study · 2025 – 2026</p>
+        </div>
+    </div>
+</footer></main>
+
+<div id="tb-lightbox" aria-hidden="true"><span class="tb-lb-label">Tubaland · image preview</span><button class="tb-lb-close" type="button" aria-label="Close image preview">×</button><img alt="Expanded Tubaland project image"></div>
+<script>
+const header=document.getElementById('site-header');
+window.addEventListener('scroll',()=>header&&header.classList.toggle('scrolled',window.scrollY>20),{passive:true});
+const lb=document.getElementById('tb-lightbox'),lbImg=lb.querySelector('img');
+function openTb(src,alt){lbImg.src=src;lbImg.alt=alt||'Tubaland project image';lb.classList.add('open');lb.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'}
+function closeTb(){lb.classList.remove('open');lb.setAttribute('aria-hidden','true');lbImg.src='';document.body.style.overflow=''}
+document.querySelectorAll('[data-tb-lightbox]').forEach(el=>el.addEventListener('click',()=>openTb(el.dataset.tbLightbox,el.alt||'Tubaland project image')));
+document.querySelector('.tb-lb-close').addEventListener('click',closeTb);lb.addEventListener('click',e=>{if(e.target===lb)closeTb()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeTb()});
+const reveals=document.querySelectorAll('.tb-reveal');const io=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');io.unobserve(entry.target)}}),{threshold:.08});reveals.forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

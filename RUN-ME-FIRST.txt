@@ -1,0 +1,6 @@
+KEYSIMADEIT PORTFOLIO
+1. Extract this folder.
+2. Open the folder in VS Code.
+3. Open index.html with Live Server.
+4. Do NOT open a different copy of index.html from another folder.
+5. The site uses local CSS/JS and local image assets. Internet is only needed for the Google Play button and optional external links.
