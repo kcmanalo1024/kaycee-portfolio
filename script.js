@@ -1,9 +1,14 @@
 
 const header=document.getElementById('site-header');
 window.addEventListener('scroll',()=>header&&header.classList.toggle('scrolled',scrollY>20));
-const menuBtn=document.getElementById('menu-btn'),mobileMenu=document.getElementById('mobile-menu');
-menuBtn?.addEventListener('click',()=>mobileMenu?.classList.toggle('open'));
-mobileMenu?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mobileMenu.classList.remove('open')));
+const menuBtn=document.getElementById('menu-btn'),mobileMenu=document.getElementById('mobile-menu'),menuClose=document.getElementById('menu-close'),menuOverlay=document.getElementById('menu-overlay');
+function openMenu(){mobileMenu?.classList.add('open');menuOverlay?.classList.add('open');mobileMenu?.setAttribute('aria-hidden','false');menuBtn?.setAttribute('aria-expanded','true');document.body.style.overflow='hidden';}
+function closeMenu(){mobileMenu?.classList.remove('open');menuOverlay?.classList.remove('open');mobileMenu?.setAttribute('aria-hidden','true');menuBtn?.setAttribute('aria-expanded','false');document.body.style.overflow='';}
+menuBtn?.addEventListener('click',()=>mobileMenu?.classList.contains('open')?closeMenu():openMenu());
+menuClose?.addEventListener('click',closeMenu);
+menuOverlay?.addEventListener('click',closeMenu);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
+mobileMenu?.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
 if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('visible')),{threshold:.08});document.querySelectorAll('.reveal').forEach(e=>io.observe(e));}else document.querySelectorAll('.reveal').forEach(e=>e.classList.add('visible'));
 const year=document.getElementById('year');if(year)year.textContent=new Date().getFullYear();
 
