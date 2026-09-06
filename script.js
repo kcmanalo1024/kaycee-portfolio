@@ -39,3 +39,15 @@ const lightbox=document.getElementById('lightbox'),lightboxImg=document.getEleme
 document.querySelectorAll('[data-lightbox]').forEach(el=>el.addEventListener('click',()=>{if(!lightbox||!lightboxImg)return;lightboxImg.src=el.dataset.lightbox;lightbox.classList.add('open');lightbox.setAttribute('aria-hidden','false')}));
 function closeBox(){lightbox?.classList.remove('open');if(lightboxImg)lightboxImg.src='';lightbox?.setAttribute('aria-hidden','true')}
 document.getElementById('close-lightbox')?.addEventListener('click',closeBox);lightbox?.addEventListener('click',e=>{if(e.target===lightbox)closeBox()});document.addEventListener('keydown',e=>e.key==='Escape'&&closeBox());
+
+
+/* Branded intro splash */
+(function(){
+  const splash=document.getElementById('site-splash');
+  if(!splash)return;
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hide=()=>{splash.classList.add('is-hidden');setTimeout(()=>splash.remove(),700)};
+  if(reduce){hide();return}
+  window.addEventListener('load',()=>setTimeout(hide,1050),{once:true});
+  setTimeout(hide,2200);
+})();

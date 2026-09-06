@@ -24,3 +24,9 @@ The Tubaland button currently opens a Google Play search for “Tubaland”. If 
 
 ## Assets
 All supplied project screenshots, certificates, standees, resume, case-study document, and the two uploaded personal photos are included under `assets/` and `documents/`.
+
+
+## Latest portfolio updates
+- CDP case study now includes the existing `cdp-landing.png` and `cdp-login.png` screens.
+- Tubaland Before/After comparisons use captions below each image rather than beside the artwork.
+- CDP prototype screens include a confidentiality note; sensitive company information may be obscured with blue/purple rectangle masks.

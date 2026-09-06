@@ -1,0 +1,49 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LPUB Employee Portal &amp; Widget — Gallery | keysimadeit</title><link rel="stylesheet" href="style.css"></head><body><header id="site-header"><nav class="nav-wrap"><a href="index.html" class="brand">keysi<span>madeit</span><b>®</b></a><a href="index.html#work" class="nav-cta">Back to work ↗</a></nav></header><main class="case-page"><section class="case-hero-dark"><div class="container"><div class="eyebrow">ACADEMIC ACTIVITY · MAY 3, 2025</div><h1>Employee Portal<br><span>&amp; Widget.</span></h1><p>Another Adobe XD prototyping exercise: a redesign of the LPU-B employee portal, paired with a home-screen widget concept so students can track progress and keep up with upcoming deadlines at a glance.</p><div class="tags"><span>Adobe XD</span><span>UI/UX</span><span>Mobile Widget</span></div></div></section><section class="case-section"><div class="container case-layout"><div class="case-label">01 — OVERVIEW</div><div><h2>A portal redesign, plus a quick-access widget.</h2><p>This activity had two parts: redesigning the LPU-B employee portal in Adobe XD, and designing a phone widget that gives students quick access to their portal — so they can track progress and avoid missing deadlines without opening the full app.</p></div></div></section><section class="case-section"><div class="container"><div class="case-label">02 — PORTAL SCREENS</div><div class="case-gallery three"><img src="assets/images/lpub-portal-1.png" alt="LPUB Employee Portal, screen 1"><img src="assets/images/lpub-portal-2.png" alt="LPUB Employee Portal, screen 2"><img src="assets/images/lpub-portal-3.png" alt="LPUB Employee Portal, screen 3"></div></div></section><section class="case-section"><div class="container"><div class="case-label">03 — STUDENT WIDGET CONCEPT</div><div class="case-gallery" style="grid-template-columns:minmax(0,260px)"><img src="assets/images/lpub-widget.png" alt="Student portal widget concept"></div></div></section><section class="case-section"><div class="container"><div class="case-label">04 — BEFORE → AFTER</div><h2 class="wide-heading">Two screens, side by side.</h2><p class="case-copy">Only two of the redesigned screens still have a surviving “before” copy of the original portal — shown here alongside the redesign.</p>
+
+<div class="ba-wrap">
+  <p class="ba-note">Original portal → redesigned screen.</p>
+
+  <div class="ba-row">
+    <div class="ba-label"><b>01</b><span>Portal screen</span></div>
+    <figure class="ba-card"><button type="button" data-lightbox="assets/images/lpub-portal-4-before.jpg" aria-label="View before version of portal screen 1"><span class="ba-media"><img src="assets/images/lpub-portal-4-before.jpg" alt="LPUB Employee Portal screen 1, before"></span><span class="ba-meta"><strong>Before</strong><span>Original portal</span></span></button></figure>
+    <figure class="ba-card ba-after"><button type="button" data-lightbox="assets/images/lpub-portal-4-after.png" aria-label="View after version of portal screen 1"><span class="ba-media"><img src="assets/images/lpub-portal-4-after.png" alt="LPUB Employee Portal screen 1, after"></span><span class="ba-meta"><strong>After</strong><span>Redesign</span></span></button></figure>
+  </div>
+
+  <div class="ba-row">
+    <div class="ba-label"><b>02</b><span>Portal screen</span></div>
+    <figure class="ba-card"><button type="button" data-lightbox="assets/images/lpub-portal-5-before.jpg" aria-label="View before version of portal screen 2"><span class="ba-media"><img src="assets/images/lpub-portal-5-before.jpg" alt="LPUB Employee Portal screen 2, before"></span><span class="ba-meta"><strong>Before</strong><span>Original portal</span></span></button></figure>
+    <figure class="ba-card ba-after"><button type="button" data-lightbox="assets/images/lpub-portal-5-after.png" aria-label="View after version of portal screen 2"><span class="ba-media"><img src="assets/images/lpub-portal-5-after.png" alt="LPUB Employee Portal screen 2, after"></span><span class="ba-meta"><strong>After</strong><span>Redesign</span></span></button></figure>
+  </div>
+</div>
+
+</div></section></main>
+
+<div id="lightbox" class="lightbox" aria-hidden="true"><button id="close-lightbox">×</button><img id="lightbox-img" alt="Expanded portfolio item"></div>
+
+<footer class="tb-footer">
+    <div class="tb-container">
+        <div class="tb-footer-top">
+            <span class="tb-footer-label">GALLERY · LPUB EMPLOYEE PORTAL</span>
+            <span class="tb-footer-number">05</span>
+        </div>
+
+        <h2>
+            Thanks for<br>
+            exploring this <span>gallery.</span>
+        </h2>
+
+        <div class="tb-footer-bottom">
+            <p>Kaycee Manalo · Academic Activity · May 2025</p>
+            <a href="index.html#work">Back to work ↗</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+const lightbox=document.getElementById('lightbox'),lightboxImg=document.getElementById('lightbox-img');
+document.querySelectorAll('[data-lightbox]').forEach(el=>el.addEventListener('click',()=>{if(!lightbox||!lightboxImg)return;lightboxImg.src=el.dataset.lightbox;lightbox.classList.add('open');lightbox.setAttribute('aria-hidden','false')}));
+function closeBox(){lightbox?.classList.remove('open');if(lightboxImg)lightboxImg.src='';lightbox?.setAttribute('aria-hidden','true')}
+document.getElementById('close-lightbox')?.addEventListener('click',closeBox);lightbox?.addEventListener('click',e=>{if(e.target===lightbox)closeBox()});document.addEventListener('keydown',e=>e.key==='Escape'&&closeBox());
+</script>
+
+</body></html>
