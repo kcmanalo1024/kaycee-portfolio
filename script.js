@@ -41,13 +41,63 @@ function closeBox(){lightbox?.classList.remove('open');if(lightboxImg)lightboxIm
 document.getElementById('close-lightbox')?.addEventListener('click',closeBox);lightbox?.addEventListener('click',e=>{if(e.target===lightbox)closeBox()});document.addEventListener('keydown',e=>e.key==='Escape'&&closeBox());
 
 
-/* Branded intro splash */
-(function(){
-  const splash=document.getElementById('site-splash');
-  if(!splash)return;
-  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const hide=()=>{splash.classList.add('is-hidden');setTimeout(()=>splash.remove(),700)};
-  if(reduce){hide();return}
-  window.addEventListener('load',()=>setTimeout(hide,1050),{once:true});
-  setTimeout(hide,2200);
+/* =========================================================
+   BRANDED PORTFOLIO SPLASH
+   ========================================================= */
+
+(function () {
+  const splash = document.getElementById('site-splash');
+
+  if (!splash) return;
+
+  const reduceMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)'
+  ).matches;
+
+  let hidden = false;
+
+  const hideSplash = () => {
+    if (hidden) return;
+
+    hidden = true;
+
+    splash.classList.add('is-hidden');
+
+    setTimeout(() => {
+      splash.remove();
+    }, 900);
+  };
+
+  if (reduceMotion) {
+    hideSplash();
+    return;
+  }
+
+  /*
+    SPLASH SPEED
+
+    Change 3200 to control how long the splash stays
+    after the page finishes loading.
+
+    3200 = 3.2 seconds
+    4500 = 4.5 seconds
+    5000 = 5 seconds
+    6000 = 6 seconds
+  */
+
+  window.addEventListener(
+    'load',
+    () => {
+      setTimeout(hideSplash, 5000);
+    },
+    { once: true }
+  );
+
+  /*
+    Safety fallback.
+
+    Keep this number HIGHER than the number above.
+  */
+
+  setTimeout(hideSplash, 7000);
 })();
