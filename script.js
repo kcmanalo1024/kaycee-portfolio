@@ -41,63 +41,21 @@ function closeBox(){lightbox?.classList.remove('open');if(lightboxImg)lightboxIm
 document.getElementById('close-lightbox')?.addEventListener('click',closeBox);lightbox?.addEventListener('click',e=>{if(e.target===lightbox)closeBox()});document.addEventListener('keydown',e=>e.key==='Escape'&&closeBox());
 
 
-/* =========================================================
-   BRANDED PORTFOLIO SPLASH
-   ========================================================= */
-
-(function () {
-  const splash = document.getElementById('site-splash');
-
-  if (!splash) return;
-
-  const reduceMotion = window.matchMedia(
-    '(prefers-reduced-motion: reduce)'
-  ).matches;
-
-  let hidden = false;
-
-  const hideSplash = () => {
-    if (hidden) return;
-
-    hidden = true;
-
+/* Branded intro splash */
+(function(){
+  const splash=document.getElementById('site-splash');
+  if(!splash)return;
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let hidden=false;
+  const hide=()=>{
+    if(hidden)return;
+    hidden=true;
     splash.classList.add('is-hidden');
-
-    setTimeout(() => {
-      splash.remove();
-    }, 900);
+    setTimeout(()=>splash.remove(),900);
   };
-
-  if (reduceMotion) {
-    hideSplash();
-    return;
-  }
-
-  /*
-    SPLASH SPEED
-
-    Change 3200 to control how long the splash stays
-    after the page finishes loading.
-
-    3200 = 3.2 seconds
-    4500 = 4.5 seconds
-    5000 = 5 seconds
-    6000 = 6 seconds
-  */
-
-  window.addEventListener(
-    'load',
-    () => {
-      setTimeout(hideSplash, 5000);
-    },
-    { once: true }
-  );
-
-  /*
-    Safety fallback.
-
-    Keep this number HIGHER than the number above.
-  */
-
-  setTimeout(hideSplash, 7000);
+  if(reduce){hide();return}
+  // Long enough to read the identity, but still quick enough to feel like an intro.
+  window.addEventListener('load',()=>setTimeout(hide,3200),{once:true});
+  // Safety fallback in case a slow asset prevents the load event.
+  setTimeout(hide,5000);
 })();
