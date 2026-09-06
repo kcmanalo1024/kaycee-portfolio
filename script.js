@@ -43,19 +43,41 @@ document.getElementById('close-lightbox')?.addEventListener('click',closeBox);li
 
 /* Branded intro splash */
 (function(){
-  const splash=document.getElementById('site-splash');
-  if(!splash)return;
-  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let hidden=false;
-  const hide=()=>{
-    if(hidden)return;
-    hidden=true;
+  const splash = document.getElementById('site-splash');
+  if(!splash) return;
+
+  // If the splash has already been shown in this browser tab,
+  // remove it immediately when returning to the portfolio.
+  if(sessionStorage.getItem('portfolioSplashShown')){
+    splash.remove();
+    return;
+  }
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let hidden = false;
+
+  const hide = () => {
+    if(hidden) return;
+    hidden = true;
+
+    // Remember that the splash has already been shown
+    sessionStorage.setItem('portfolioSplashShown', 'true');
+
     splash.classList.add('is-hidden');
-    setTimeout(()=>splash.remove(),900);
+
+    setTimeout(() => splash.remove(), 900);
   };
-  if(reduce){hide();return}
-  // Long enough to read the identity, but still quick enough to feel like an intro.
-  window.addEventListener('load',()=>setTimeout(hide,3200),{once:true});
-  // Safety fallback in case a slow asset prevents the load event.
-  setTimeout(hide,5000);
+
+  if(reduce){
+    hide();
+    return;
+  }
+
+  // Show splash on the first visit
+  window.addEventListener('load', () => {
+    setTimeout(hide, 3200);
+  }, {once:true});
+
+  // Safety fallback
+  setTimeout(hide, 5000);
 })();
