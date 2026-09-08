@@ -1,11 +1,11 @@
 
 // Keep the homepage in its final recruiter-focused reading order.
 const main=document.querySelector('main');
-const hero=document.getElementById('home'),about=document.getElementById('about'),process=document.querySelector('.process-section'),work=document.getElementById('work'),moreWork=document.getElementById('more-work'),skills=document.getElementById('skills'),designs=document.getElementById('designs'),experience=document.getElementById('experience'),certifications=document.getElementById('certifications'),education=document.getElementById('education'),contact=document.getElementById('contact');
-if(main)main.append(hero,about,process,work,moreWork,skills,designs,experience,certifications,education,contact);
+const hero=document.getElementById('home'),about=document.getElementById('about'),process=document.querySelector('.process-section'),work=document.getElementById('work'),moreWork=document.getElementById('more-work'),skills=document.getElementById('skills'),designs=document.getElementById('designs'),experience=document.getElementById('experience'),education=document.getElementById('education'),contact=document.getElementById('contact');
+if(main)main.append(hero,about,process,work,moreWork,skills,designs,experience,education,contact);
 
 const setKicker=(section,text)=>{const kicker=section?.querySelector('.section-kicker');if(kicker)kicker.textContent=text};
-setKicker(about,'01 — About');setKicker(process,'02 — How I work');setKicker(work,'03 — Featured work');setKicker(skills,'04 — Skills & tools');setKicker(designs,'05 — Selected corporate work');setKicker(experience,'06 — Experience');setKicker(certifications,'07 — Certifications');setKicker(education,'08 — Education');setKicker(contact,'09 — Contact');
+setKicker(about,'01 — About');setKicker(process,'02 — How I work');setKicker(work,'03 — Featured work');setKicker(skills,'04 — Skills & tools');setKicker(designs,'05 — Selected corporate work');setKicker(experience,'05 — Experience');setKicker(education,'06 — Education & Certifications');setKicker(contact,'07 — Contact');
 if(moreWork){moreWork.classList.add('work-continuation');setKicker(moreWork,'More featured work');}
 
 // Use the same project-art direction in the top three featured cards while retaining their detailed project information.
@@ -16,9 +16,56 @@ const packdMedia=spotlightCards[2]?.querySelector('.spotlight-media');
 if(packdMedia){packdMedia.className='spotlight-media featured-media cdp-prototype-stack packd-prototype-stack pack-feature';packdMedia.innerHTML='<div class="cdp-thumb cdp-thumb-main"><img src="assets/images/packd-up-3.jpeg" alt="Pack’d Up product listing"></div><div class="cdp-thumb cdp-thumb-left"><img src="assets/images/packd-up-2.jpeg" alt="Pack’d Up home interface"></div><div class="cdp-thumb cdp-thumb-right"><img src="assets/images/packd-up-4.jpeg" alt="Pack’d Up storefront interface"></div>';}
 document.querySelectorAll('#more-work .featured-card:nth-child(-n+3)').forEach(card=>card.remove());
 
+// Group the existing work content without recreating its cards or controls.
+if(work&&moreWork&&designs){
+  const container=work.querySelector('.container');
+  const featured=document.createElement('div');
+  featured.id='featured-work';
+  featured.append(work.querySelector('.spotlight-grid'));
+  const categories=[['Featured Work',featured],['Academic Work',moreWork],['Corporate Work',designs]];
+  const tablist=document.createElement('div');
+  tablist.className='work-tabs';
+  tablist.setAttribute('role','tablist');
+  tablist.setAttribute('aria-label','Selected work categories');
+  setKicker(work,'03 — Selected Work');
+  work.querySelector('.display').innerHTML='Selected <span>Work.</span>';
+  moreWork.querySelector('.section-kicker')?.remove();
+  moreWork.querySelector('.featured-head')?.remove();
+  designs.querySelector('.section-kicker')?.remove();
+  container.append(tablist);
+  const activate=(index,focus=false)=>{
+    categories.forEach(([,panel],i)=>{
+      const selected=i===index,tab=tablist.children[i];
+      tab.setAttribute('aria-selected',String(selected));
+      tab.tabIndex=selected?0:-1;
+      panel.hidden=!selected;
+      if(selected)panel.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));
+    });
+    if(focus)tablist.children[index].focus();
+  };
+  categories.forEach(([label,panel],index)=>{
+    const tab=document.createElement('button');
+    tab.type='button';tab.id='work-tab-'+index;tab.textContent=label;
+    tab.setAttribute('role','tab');tab.setAttribute('aria-controls',panel.id);
+    panel.classList.add('work-panel');panel.setAttribute('role','tabpanel');
+    panel.setAttribute('aria-labelledby',tab.id);panel.tabIndex=0;
+    tab.addEventListener('click',()=>activate(index));
+    tab.addEventListener('keydown',event=>{
+      const next=event.key==='ArrowRight'?(index+1)%3:event.key==='ArrowLeft'?(index+2)%3:event.key==='Home'?0:event.key==='End'?2:null;
+      if(next!==null){event.preventDefault();activate(next,true);}
+    });
+    tablist.append(tab);container.append(panel);
+  });
+  const syncHash=()=>{
+    const index=categories.findIndex(([,panel])=>'#'+panel.id===location.hash||panel.querySelector('[id="'+location.hash.slice(1).replace(/[^\w-]/g,'')+'"]'));
+    if(index>=0){activate(index);requestAnimationFrame(()=>work.scrollIntoView());}
+  };
+  activate(0);syncHash();window.addEventListener('hashchange',syncHash);
+}
+
 // The mobile sidebar mirrors the final section structure.
 const mobileLinks=document.querySelector('.mobile-menu-links');
-if(mobileLinks)mobileLinks.innerHTML='<a href="#about"><span>01</span>About</a><a href="#how-i-work"><span>02</span>How I work</a><a href="#work"><span>03</span>Featured work</a><a href="#skills"><span>04</span>Skills &amp; tools</a><a href="#designs"><span>05</span>Corporate work</a><a href="#experience"><span>06</span>Experience</a><a href="#certifications"><span>07</span>Certifications</a><a href="#education"><span>08</span>Education</a><a href="#contact"><span>09</span>Contact</a>';
+if(mobileLinks)mobileLinks.innerHTML='<a href="#about"><span>01</span>About</a><a href="#how-i-work"><span>02</span>How I work</a><a href="#work"><span>03</span>Selected Work</a><a href="#skills"><span>04</span>Skills &amp; tools</a><a href="#experience"><span>05</span>Experience</a><a href="#education"><span>06</span>Education &amp; Certifications</a><a href="#contact"><span>07</span>Contact</a>';
 process?.setAttribute('id','how-i-work');
 document.querySelector('.desktop-nav')?.remove();
 const heroResume=document.querySelector('.hero .btn-outline');if(heroResume){heroResume.href='documents/Kaycee-Manalo-Resume.pdf';heroResume.target='_blank';heroResume.textContent='View resume ↗';}
@@ -30,11 +77,26 @@ socialGroup.append(github);}
 // Order the supplied credentials by relevance, led by TESDA NC III.
 const certificateOrder=['cert-IMG_5211.jpeg','cert-IMG_5206.jpeg','cert-IMG_5207.jpeg','cert-IMG_5210.jpeg','cert-IMG_5209.jpeg','cert-IMG_5208.jpeg','cert-IMG_5212.jpeg'];
 const certificateDetails={'cert-IMG_5211.jpeg':['National Certificate III — Visual Graphic Design','TESDA'],'cert-IMG_5206.jpeg':['Java Object-Oriented Programming Certification Exam','CodeChum'],'cert-IMG_5207.jpeg':['IT7 — BSIT IIA Completion Certificate','CodeChum'],'cert-IMG_5210.jpeg':['DevNet Associate','Cisco Networking Academy'],'cert-IMG_5209.jpeg':['CCNA: Introduction to Networks','Cisco Networking Academy'],'cert-IMG_5208.jpeg':['CCNA: Switching, Routing, and Wireless Essentials','Cisco Networking Academy'],'cert-IMG_5212.jpeg':['Foundations of Cybersecurity','Google / Coursera']};
+const certificateDescriptions={'cert-accenture-ux.jpg':'Introduces user-centred thinking for digital products.','cert-accenture-mobile.jpg':'Explores the considerations behind mobile digital experiences.','cert-IMG_5211.jpeg':'Recognizes foundational visual graphic design competency.','cert-IMG_5206.jpeg':'Validates learning in Java object-oriented programming concepts.','cert-IMG_5207.jpeg':'Documents completion of the listed BSIT IIA course requirement.','cert-IMG_5210.jpeg':'Covers introductory developer skills for software, APIs, and network automation.','cert-IMG_5209.jpeg':'Builds a foundation in networking concepts, architecture, and connectivity.','cert-IMG_5208.jpeg':'Develops knowledge of switching, routing, and wireless fundamentals.','cert-IMG_5212.jpeg':'Introduces core cybersecurity concepts, practices, and career pathways.'};
 const certificateTrack=document.querySelector('.cert-carousel .carousel-track');
-if(certificateTrack){const cards=[...certificateTrack.children];certificateOrder.forEach(file=>{const card=cards.find(item=>item.dataset.lightbox?.endsWith(file));if(card){certificateTrack.append(card);const [name,issuer]=certificateDetails[file];card.querySelector('b').textContent=name;card.querySelector('span').textContent=issuer;card.querySelector('img').alt=name;}})}
-const certificateHeading=certifications?.querySelector('.work-head h2'),certificateIntro=certifications?.querySelector('.work-head .body');
-if(certificateHeading)certificateHeading.innerHTML='Selected credentials,<br><span>in focus.</span>';
-if(certificateIntro)certificateIntro.textContent='A focused selection of verified credentials. Browse the remaining certificates using the controls.';
+const newCertDetails={'cert-accenture-ux.jpg':['Digital Skills: User Experience','Accenture · FutureLearn','Issued September 7, 2026'],'cert-accenture-mobile.jpg':['Digital Skills: Mobile','Accenture · FutureLearn','Issued September 7, 2026']};
+if(certificateTrack){
+  const cards=[...certificateTrack.children];
+  certificateOrder.forEach(file=>{const card=cards.find(item=>item.dataset.lightbox?.endsWith(file));if(card){certificateTrack.append(card);const [name,issuer]=certificateDetails[file];card.querySelector('b').textContent=name;card.querySelector('span').textContent=issuer;card.querySelector('img').alt=name;}});
+  [...certificateTrack.querySelectorAll('.cert-item')].forEach(card=>{const file=card.dataset.lightbox.split('/').pop(),info=card.querySelector('.cert-info');if(info&&certificateDescriptions[file]&&!info.querySelector('.cert-description')){const description=document.createElement('small');description.className='cert-description';description.textContent=certificateDescriptions[file];info.append(description);}});
+  // Build the scannable credential list beneath the carousel from the same data, so the two stay in sync.
+  const certList=document.querySelector('.cert-list');
+  if(certList){
+    const newCards=[...certificateTrack.querySelectorAll('.cert-item')].filter(item=>Object.keys(newCertDetails).some(file=>item.dataset.lightbox?.endsWith(file)));
+    const orderedCards=[...newCards,...certificateOrder.map(file=>cards.find(item=>item.dataset.lightbox?.endsWith(file))).filter(Boolean)];
+    certList.innerHTML=orderedCards.map(item=>{
+      const file=item.dataset.lightbox.split('/').pop();
+      const details=newCertDetails[file]||[item.querySelector('b')?.textContent,item.querySelector('span')?.textContent,''];
+      const [name,issuer,date]=details;
+      return `<div class="learn-row reveal"><div class="learn-row-left"><span>${issuer}</span><h3>${name}</h3></div><div class="learn-row-right"><span>${date||'Verified credential'}</span></div></div>`;
+    }).join('');
+  }
+}
 
 const corporateCaption=document.querySelector('.design-caption');
 if(corporateCaption){const label=corporateCaption.querySelector('em'),title=corporateCaption.querySelector('h2'),description=corporateCaption.querySelector('p');if(label)label.textContent='CLIENT / CORPORATE WORK';if(title)title.textContent='Unisea Manila Information Technology Corp.';if(description)description.textContent="Corporate materials created during my internship based on the company's established branding and visual identity. Selected materials were reviewed and approved by my OJT supervisor.";}
@@ -52,6 +114,36 @@ menuOverlay?.addEventListener('click',closeMenu);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
 mobileMenu?.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
 mobileMenu?.addEventListener('keydown',e=>{if(e.key!=='Tab')return;const items=[...mobileMenu.querySelectorAll('a,button:not([disabled])')];const first=items[0],last=items.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}});
+// Education / Certifications tab switcher.
+function initLearnTabs(root){
+  const tabs=[...root.querySelectorAll('.learn-tab')],indicator=root.querySelector('.learn-tab-indicator');
+  const panels=root.parentElement.querySelectorAll('.learn-panel');
+  function place(tab){if(!indicator||!tab)return;indicator.style.width=tab.offsetWidth+'px';indicator.style.transform=`translateX(${tab.offsetLeft}px)`;}
+  function activate(tab){
+    tabs.forEach(t=>{const on=t===tab;t.classList.toggle('active',on);t.setAttribute('aria-selected',String(on));});
+    panels.forEach(p=>{const on=p.id===tab.dataset.target;p.classList.toggle('active',on);p.hidden=!on;if(on)p.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));});
+    place(tab);
+  }
+  tabs.forEach(tab=>tab.addEventListener('click',()=>activate(tab)));
+  const initial=tabs.find(t=>t.classList.contains('active'))||tabs[0];
+  requestAnimationFrame(()=>place(initial));
+  window.addEventListener('resize',()=>place(tabs.find(t=>t.classList.contains('active'))||tabs[0]));
+}
+document.querySelectorAll('.learn-tabs').forEach(initLearnTabs);
+
+// Decorative line icons keep each tab's text as its accessible name.
+const tabIconPaths={
+  'Featured Work':'<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/>',
+  'Academic Work':'<path d="m2 9 10-5 10 5-10 5Z"/><path d="M6 11v6c4 3 8 3 12 0v-6M22 9v7"/>',
+  'Corporate Work':'<rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12c6 4 12 4 18 0M12 12v4"/>',
+  'Education':'<path d="M12 5v16M12 5C9 3 5 3 2 4v15c3-1 7-1 10 2 3-3 7-3 10-2V4c-3-1-7-1-10 1Z"/>',
+  'Certifications':'<circle cx="12" cy="9" r="6"/><path d="m8 14-1 8 5-3 5 3-1-8m-7-5 2 2 4-4"/>'
+};
+document.querySelectorAll('.work-tabs button,.learn-tab').forEach(tab=>{
+  const label=tab.textContent.trim();
+  if(tabIconPaths[label])tab.innerHTML='<svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+tabIconPaths[label]+'</svg><span>'+label+'</span>';
+});
+
 if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('visible')),{threshold:.08});document.querySelectorAll('.reveal').forEach(e=>io.observe(e));}else document.querySelectorAll('.reveal').forEach(e=>e.classList.add('visible'));
 const year=document.getElementById('year');if(year)year.textContent=new Date().getFullYear();
 
