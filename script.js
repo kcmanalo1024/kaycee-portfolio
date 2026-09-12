@@ -22,7 +22,7 @@ if(work&&moreWork&&designs){
   const featured=document.createElement('div');
   featured.id='featured-work';
   featured.append(work.querySelector('.spotlight-grid'));
-  const categories=[['Featured Work',featured],['Academic Work',moreWork],['Corporate Work',designs]];
+  const categories=[['Featured Work',featured],['Academic Work',moreWork],['Internship Graphic Design',designs]];
   const tablist=document.createElement('div');
   tablist.className='work-tabs';
   tablist.setAttribute('role','tablist');
@@ -61,6 +61,60 @@ if(work&&moreWork&&designs){
     if(index>=0){activate(index);requestAnimationFrame(()=>work.scrollIntoView());}
   };
   activate(0);syncHash();window.addEventListener('hashchange',syncHash);
+
+  // A native category picker leaves the browser tabs dedicated to individual projects.
+  const categoryControl=document.createElement('label');
+  categoryControl.className='work-category';
+  categoryControl.innerHTML='<span>Work category</span><select aria-label="Work category"></select>';
+  const categorySelect=categoryControl.querySelector('select');
+  categories.forEach(([label],index)=>categorySelect.add(new Option(label,String(index))));
+  tablist.before(categoryControl);
+  tablist.hidden=true;
+  categorySelect.addEventListener('change',()=>activate(Number(categorySelect.value)));
+  const syncCategory=()=>{categorySelect.value=String([...tablist.children].findIndex(tab=>tab.getAttribute('aria-selected')==='true'));};
+  new MutationObserver(syncCategory).observe(tablist,{subtree:true,attributes:true,attributeFilter:['aria-selected']});
+  syncCategory();
+
+  [featured,moreWork].forEach((panel,groupIndex)=>{
+    const grid=panel.querySelector('.spotlight-grid,.featured-grid');
+    const cards=[...grid.children];
+    const frame=document.createElement('div');
+    frame.className='work-browser';
+    frame.innerHTML='<div class="work-browser-top"><span class="work-window-dots" aria-hidden="true"><i></i><i></i><i></i></span><div class="project-tabs" role="tablist" aria-label="'+categories[groupIndex][0]+' projects"></div></div><div class="work-browser-toolbar"><button type="button" class="work-prev" aria-label="Previous project">‹</button><button type="button" class="work-next" aria-label="Next project">›</button><a class="work-address"><span aria-hidden="true">▣</span><span class="work-address-title"></span><span aria-hidden="true">↗</span></a></div>';
+    grid.before(frame);frame.append(grid);
+    const tabs=frame.querySelector('.project-tabs');
+    let current=0;
+    const show=(index,focus=false)=>{
+      current=(index+cards.length)%cards.length;
+      cards.forEach((card,i)=>{
+        card.hidden=i!==current;
+        card.classList.add('visible');
+        tabs.children[i].setAttribute('aria-selected',String(i===current));
+        tabs.children[i].tabIndex=i===current?0:-1;
+      });
+      const card=cards[current];
+      frame.querySelector('.work-address-title').textContent=card.querySelector('h3').textContent;
+      frame.querySelector('.work-address').href=card.querySelector('.featured-link').getAttribute('href');
+      if(focus)tabs.children[current].focus();
+    };
+    cards.forEach((card,index)=>{
+      const tab=document.createElement('button');
+      tab.type='button';tab.textContent=card.querySelector('h3').textContent;
+      tab.id='project-tab-'+groupIndex+'-'+index;
+      card.id='project-panel-'+groupIndex+'-'+index;
+      tab.setAttribute('role','tab');tab.setAttribute('aria-controls',card.id);
+      card.setAttribute('role','tabpanel');card.setAttribute('aria-labelledby',tab.id);
+      tab.addEventListener('click',()=>show(index));
+      tab.addEventListener('keydown',event=>{
+        const next=event.key==='ArrowRight'?index+1:event.key==='ArrowLeft'?index-1:event.key==='Home'?0:event.key==='End'?cards.length-1:null;
+        if(next!==null){event.preventDefault();show(next,true);}
+      });
+      tabs.append(tab);
+    });
+    frame.querySelector('.work-prev').addEventListener('click',()=>show(current-1));
+    frame.querySelector('.work-next').addEventListener('click',()=>show(current+1));
+    show(0);
+  });
 }
 
 // The mobile sidebar mirrors the final section structure.
@@ -77,13 +131,42 @@ socialGroup.append(github);}
 // Order the supplied credentials by relevance, led by TESDA NC III.
 const certificateOrder=['cert-IMG_5211.jpeg','cert-IMG_5206.jpeg','cert-IMG_5207.jpeg','cert-IMG_5210.jpeg','cert-IMG_5209.jpeg','cert-IMG_5208.jpeg','cert-IMG_5212.jpeg'];
 const certificateDetails={'cert-IMG_5211.jpeg':['National Certificate III — Visual Graphic Design','TESDA'],'cert-IMG_5206.jpeg':['Java Object-Oriented Programming Certification Exam','CodeChum'],'cert-IMG_5207.jpeg':['IT7 — BSIT IIA Completion Certificate','CodeChum'],'cert-IMG_5210.jpeg':['DevNet Associate','Cisco Networking Academy'],'cert-IMG_5209.jpeg':['CCNA: Introduction to Networks','Cisco Networking Academy'],'cert-IMG_5208.jpeg':['CCNA: Switching, Routing, and Wireless Essentials','Cisco Networking Academy'],'cert-IMG_5212.jpeg':['Foundations of Cybersecurity','Google / Coursera']};
-const certificateDescriptions={'cert-accenture-ux.jpg':'Introduces user-centred thinking for digital products.','cert-accenture-mobile.jpg':'Explores the considerations behind mobile digital experiences.','cert-IMG_5211.jpeg':'Recognizes foundational visual graphic design competency.','cert-IMG_5206.jpeg':'Validates learning in Java object-oriented programming concepts.','cert-IMG_5207.jpeg':'Documents completion of the listed BSIT IIA course requirement.','cert-IMG_5210.jpeg':'Covers introductory developer skills for software, APIs, and network automation.','cert-IMG_5209.jpeg':'Builds a foundation in networking concepts, architecture, and connectivity.','cert-IMG_5208.jpeg':'Develops knowledge of switching, routing, and wireless fundamentals.','cert-IMG_5212.jpeg':'Introduces core cybersecurity concepts, practices, and career pathways.'};
+const certificateDescriptions={
+  'cert-accenture-ux.jpg':'A three-week Accenture course on FutureLearn introducing user experience and its importance in digital products and services. Supports my UI/UX foundation by encouraging a user-centred approach to creating clear, usable digital experiences.',
+  'cert-accenture-mobile.jpg':'A three-week Accenture course on FutureLearn exploring the role of mobile technology in everyday digital experiences. Introduces mobile design, development, and the considerations involved in creating experiences for mobile users.',
+  'cert-IMG_5211.jpeg':'Awarded for completing TESDA competency requirements in Visual Graphic Design. Covers logo and print design, user experience and interface design, product packaging, and booth and display design, alongside workplace communication and quality standards.',
+  'cert-IMG_5206.jpeg':'A CodeChum credential documenting the LPU Batangas Java Object-Oriented Programming Certification Exam. Reflects my academic work with Java and object-oriented programming as part of my software development foundation.',
+  'cert-IMG_5207.jpeg':'Recognizes completion of the IT7 — BSIT IIA coursework on CodeChum, with a recorded total of 2,083 out of 2,440 points. Documents my progress in the course and contributes to my academic programming foundation.',
+  'cert-IMG_5210.jpeg':'Recognizes completion of the DevNet Associate course offered by LPU through Cisco Networking Academy. Covers introductory software, API, and network automation concepts, connecting application development with the systems that support it.',
+  'cert-IMG_5209.jpeg':'Recognizes completion of the Introduction to Networks course offered by LPU through Cisco Networking Academy. Builds a foundation in network concepts, architecture, and connectivity that supports my broader understanding of IT systems.',
+  'cert-IMG_5208.jpeg':'Recognizes completion of the Switching, Routing, and Wireless Essentials course offered by LPU through Cisco Networking Academy. Develops my understanding of these core networking areas and extends the foundation established in Introduction to Networks.',
+  'cert-IMG_5212.jpeg':'Recognizes completion of Foundations of Cybersecurity, an online course authorized by Google and offered through Coursera. Introduces core cybersecurity concepts, practices, and career pathways, adding security awareness to my design, development, and IT foundation.'
+};
+// Dates transcribed from the supplied certificate images.
+const certificateDates={
+  'cert-accenture-ux.jpg':'Issued date: September 7, 2026',
+  'cert-accenture-mobile.jpg':'Issued date: September 7, 2026',
+  'cert-IMG_5211.jpeg':'Issued date: February 4, 2025',
+  'cert-IMG_5206.jpeg':'Issued date: January 15, 2025',
+  'cert-IMG_5207.jpeg':'Issued date: January 7, 2025',
+  'cert-IMG_5210.jpeg':'Completion date: December 20, 2025',
+  'cert-IMG_5209.jpeg':'Completion date: March 11, 2025',
+  'cert-IMG_5208.jpeg':'Completion date: June 15, 2026',
+  'cert-IMG_5212.jpeg':'Completion date: April 15, 2026'
+};
 const certificateTrack=document.querySelector('.cert-carousel .carousel-track');
 const newCertDetails={'cert-accenture-ux.jpg':['Digital Skills: User Experience','Accenture · FutureLearn','Issued September 7, 2026'],'cert-accenture-mobile.jpg':['Digital Skills: Mobile','Accenture · FutureLearn','Issued September 7, 2026']};
 if(certificateTrack){
   const cards=[...certificateTrack.children];
   certificateOrder.forEach(file=>{const card=cards.find(item=>item.dataset.lightbox?.endsWith(file));if(card){certificateTrack.append(card);const [name,issuer]=certificateDetails[file];card.querySelector('b').textContent=name;card.querySelector('span').textContent=issuer;card.querySelector('img').alt=name;}});
-  [...certificateTrack.querySelectorAll('.cert-item')].forEach(card=>{const file=card.dataset.lightbox.split('/').pop(),info=card.querySelector('.cert-info');if(info&&certificateDescriptions[file]&&!info.querySelector('.cert-description')){const description=document.createElement('small');description.className='cert-description';description.textContent=certificateDescriptions[file];info.append(description);}});
+  [...certificateTrack.querySelectorAll('.cert-item')].forEach(card=>{
+    const file=card.dataset.lightbox.split('/').pop(),info=card.querySelector('.cert-info');
+    if(!info)return;
+    const date=info.querySelector('small:not(.cert-description)')||document.createElement('small');
+    date.className='cert-date';date.textContent=certificateDates[file];info.append(date);
+    const description=info.querySelector('.cert-description')||document.createElement('small');
+    description.className='cert-description';description.textContent=certificateDescriptions[file];info.append(description);
+  });
   // Build the scannable credential list beneath the carousel from the same data, so the two stay in sync.
   const certList=document.querySelector('.cert-list');
   if(certList){
@@ -92,7 +175,8 @@ if(certificateTrack){
     certList.innerHTML=orderedCards.map(item=>{
       const file=item.dataset.lightbox.split('/').pop();
       const details=newCertDetails[file]||[item.querySelector('b')?.textContent,item.querySelector('span')?.textContent,''];
-      const [name,issuer,date]=details;
+      const [name,issuer]=details;
+      const date=certificateDates[file];
       return `<div class="learn-row reveal"><div class="learn-row-left"><span>${issuer}</span><h3>${name}</h3></div><div class="learn-row-right"><span>${date||'Verified credential'}</span></div></div>`;
     }).join('');
   }
@@ -100,6 +184,45 @@ if(certificateTrack){
 
 const corporateCaption=document.querySelector('.design-caption');
 if(corporateCaption){const label=corporateCaption.querySelector('em'),title=corporateCaption.querySelector('h2'),description=corporateCaption.querySelector('p');if(label)label.textContent='CLIENT / CORPORATE WORK';if(title)title.textContent='Unisea Manila Information Technology Corp.';if(description)description.textContent="Corporate materials created during my internship based on the company's established branding and visual identity. Selected materials were reviewed and approved by my OJT supervisor.";}
+
+if(designs){
+  const internshipDesigns=[
+    ['A4 Blank Template (Building BG).png','Hiring template','A hiring template created during my internship, designed to present recruitment information in a clear, professional layout.'],
+    ['C1_MDL.png','Standee design','A standee created during my internship, arranging corporate information in a tall display format with a clear visual hierarchy.'],
+    ['C1_MWL.png','Standee design','A standee created during my internship, arranging corporate information in a tall display format with a clear visual hierarchy.'],
+    ['D1_MDL.png','Standee design','A standee created during my internship, arranging corporate information in a tall display format with a clear visual hierarchy.'],
+    ['D1_MWL.png','Standee design','A standee created during my internship, arranging corporate information in a tall display format with a clear visual hierarchy.'],
+    ['H1_MDL.png','Standee design','A standee created during my internship, arranging corporate information in a tall display format with a clear visual hierarchy.'],
+    ['H1_MWL.png','Standee design','A standee created during my internship, arranging corporate information in a tall display format with a clear visual hierarchy.'],
+    ['I1_MWL.png','Standee design','A standee created during my internship, arranging corporate information in a tall display format with a clear visual hierarchy.'],
+    ['UNISEA_DESKTOP WALLPAPER (1920 X 1080).png','Desktop wallpaper','A branded desktop wallpaper featuring the company logo and maritime service areas, adapted to a widescreen format for a consistent workplace identity.']
+  ];
+  const container=designs.querySelector('.container');
+  const frame=document.createElement('div');frame.className='work-browser internship-browser';
+  frame.innerHTML='<div class="work-browser-top"><span class="work-window-dots" aria-hidden="true"><i></i><i></i><i></i></span><div class="project-tabs" role="tablist" aria-label="Internship graphic designs"></div></div><div class="work-browser-toolbar"><button type="button" class="work-prev" aria-label="Previous internship design">‹</button><button type="button" class="work-next" aria-label="Next internship design">›</button><div class="work-address"><span aria-hidden="true">▣</span><span class="work-address-title"></span></div></div>';
+  const carousel=document.createElement('div');carousel.className='portfolio-carousel internship-carousel';carousel.dataset.carousel='internship';
+  carousel.innerHTML='<button class="carousel-arrow prev" type="button" aria-label="Previous internship design">‹</button><div class="carousel-window"><div class="carousel-track"></div></div><button class="carousel-arrow next" type="button" aria-label="Next internship design">›</button><div class="carousel-dots"></div>';
+  const track=carousel.querySelector('.carousel-track');
+  internshipDesigns.forEach(([file,type,description],index)=>{
+    const title='Internship Design '+String(index+1).padStart(2,'0');
+    const source='assets/images/ojt/'+file;
+    const slide=document.createElement('article');slide.className='carousel-item internship-slide';
+    slide.id='internship-panel-'+index;slide.setAttribute('role','tabpanel');slide.setAttribute('aria-labelledby','internship-tab-'+index);
+    const tab=document.createElement('button');tab.type='button';tab.id='internship-tab-'+index;tab.textContent=title;tab.setAttribute('role','tab');tab.setAttribute('aria-controls',slide.id);frame.querySelector('.project-tabs').append(tab);
+    const preview=document.createElement('button');preview.type='button';preview.className='internship-preview';preview.dataset.lightbox=source;preview.setAttribute('aria-label','View design: '+title);
+    const img=document.createElement('img');img.src=source;img.alt=type+' — '+title;img.loading='lazy';img.decoding='async';
+    const link=document.createElement('span');link.textContent='View design ↗';preview.append(img,link);
+    const copy=document.createElement('div');copy.className='internship-copy';
+    const label=document.createElement('span');label.className='internship-type';label.textContent=type;
+    const heading=document.createElement('h3');heading.textContent=title;
+    const body=document.createElement('p');body.textContent=description;copy.append(label,heading,body);
+    if(index===0){const note=document.createElement('aside');note.className='internship-note';note.innerHTML='<strong>Confidentiality note</strong><p>Some information in this hiring template has been blocked out to protect the company’s confidential details.</p>';copy.append(note);}
+    slide.append(preview,copy);track.append(slide);
+  });
+  frame.append(carousel);container.replaceChildren(frame);
+  frame.querySelector('.work-prev').addEventListener('click',()=>carousel.querySelector('.prev').click());
+  frame.querySelector('.work-next').addEventListener('click',()=>carousel.querySelector('.next').click());
+}
 
 const header=document.getElementById('site-header');
 window.addEventListener('scroll',()=>header&&header.classList.toggle('scrolled',scrollY>20));
@@ -118,15 +241,34 @@ mobileMenu?.addEventListener('keydown',e=>{if(e.key!=='Tab')return;const items=[
 function initLearnTabs(root){
   const tabs=[...root.querySelectorAll('.learn-tab')],indicator=root.querySelector('.learn-tab-indicator');
   const panels=root.parentElement.querySelectorAll('.learn-panel');
+  const frame=document.createElement('div');
+  frame.className='work-browser education-browser';
+  frame.innerHTML='<div class="work-browser-top"><span class="work-window-dots" aria-hidden="true"><i></i><i></i><i></i></span></div><div class="work-browser-toolbar"><button type="button" class="learn-prev" aria-label="Previous education category">‹</button><button type="button" class="learn-next" aria-label="Next education category">›</button><div class="work-address"><span aria-hidden="true">▣</span><span class="work-address-title" aria-live="polite"></span></div></div>';
+  root.before(frame);
+  root.classList.remove('learn-tabs','reveal');
+  root.classList.add('project-tabs');
+  indicator?.remove();
+  frame.querySelector('.work-browser-top').append(root);
+  panels.forEach(panel=>{panel.tabIndex=0;frame.append(panel);});
   function place(tab){if(!indicator||!tab)return;indicator.style.width=tab.offsetWidth+'px';indicator.style.transform=`translateX(${tab.offsetLeft}px)`;}
   function activate(tab){
-    tabs.forEach(t=>{const on=t===tab;t.classList.toggle('active',on);t.setAttribute('aria-selected',String(on));});
+    tabs.forEach(t=>{const on=t===tab;t.classList.toggle('active',on);t.setAttribute('aria-selected',String(on));t.tabIndex=on?0:-1;});
     panels.forEach(p=>{const on=p.id===tab.dataset.target;p.classList.toggle('active',on);p.hidden=!on;if(on)p.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));});
+    frame.querySelector('.work-address-title').textContent=tab.textContent.trim();
     place(tab);
   }
-  tabs.forEach(tab=>tab.addEventListener('click',()=>activate(tab)));
+  tabs.forEach((tab,index)=>{
+    tab.addEventListener('click',()=>activate(tab));
+    tab.addEventListener('keydown',event=>{
+      const next=event.key==='ArrowRight'?(index+1)%tabs.length:event.key==='ArrowLeft'?(index+tabs.length-1)%tabs.length:event.key==='Home'?0:event.key==='End'?tabs.length-1:null;
+      if(next!==null){event.preventDefault();activate(tabs[next]);tabs[next].focus();}
+    });
+  });
+  const step=direction=>activate(tabs[(tabs.findIndex(tab=>tab.classList.contains('active'))+direction+tabs.length)%tabs.length]);
+  frame.querySelector('.learn-prev').addEventListener('click',()=>step(-1));
+  frame.querySelector('.learn-next').addEventListener('click',()=>step(1));
   const initial=tabs.find(t=>t.classList.contains('active'))||tabs[0];
-  requestAnimationFrame(()=>place(initial));
+  activate(initial);
   window.addEventListener('resize',()=>place(tabs.find(t=>t.classList.contains('active'))||tabs[0]));
 }
 document.querySelectorAll('.learn-tabs').forEach(initLearnTabs);
@@ -135,7 +277,7 @@ document.querySelectorAll('.learn-tabs').forEach(initLearnTabs);
 const tabIconPaths={
   'Featured Work':'<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/>',
   'Academic Work':'<path d="m2 9 10-5 10 5-10 5Z"/><path d="M6 11v6c4 3 8 3 12 0v-6M22 9v7"/>',
-  'Corporate Work':'<rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12c6 4 12 4 18 0M12 12v4"/>',
+  'Internship Graphic Design':'<rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12c6 4 12 4 18 0M12 12v4"/>',
   'Education':'<path d="M12 5v16M12 5C9 3 5 3 2 4v15c3-1 7-1 10 2 3-3 7-3 10-2V4c-3-1-7-1-10 1Z"/>',
   'Certifications':'<circle cx="12" cy="9" r="6"/><path d="m8 14-1 8 5-3 5 3-1-8m-7-5 2 2 4-4"/>'
 };
@@ -147,11 +289,32 @@ document.querySelectorAll('.work-tabs button,.learn-tab').forEach(tab=>{
 if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('visible')),{threshold:.08});document.querySelectorAll('.reveal').forEach(e=>io.observe(e));}else document.querySelectorAll('.reveal').forEach(e=>e.classList.add('visible'));
 const year=document.getElementById('year');if(year)year.textContent=new Date().getFullYear();
 
+// Present each credential as a preview paired with its existing details.
+document.querySelectorAll('.cert-carousel .cert-item').forEach(button=>{
+ const slide=document.createElement('article');
+ slide.className='carousel-item certificate-slide';
+ const info=button.querySelector('.cert-info');
+ const title=info.querySelector('b'),heading=document.createElement('h3');
+ heading.textContent=title.textContent.trim();title.replaceWith(heading);
+ const issuer=info.querySelector('span');info.prepend(issuer);
+ button.before(slide);
+ button.className='certificate-preview';
+ button.setAttribute('aria-label','View certificate: '+heading.textContent);
+ const caption=document.createElement('span');caption.className='certificate-view';caption.textContent='View certificate ↗';
+ button.append(caption);slide.append(button,info);
+});
+
 function initCarousel(root){
  const track=root.querySelector('.carousel-track'),items=[...root.querySelectorAll('.carousel-item')],prev=root.querySelector('.prev'),next=root.querySelector('.next'),dots=root.querySelector('.carousel-dots');
  if(!track||!items.length)return;let index=0;
  items.forEach((_,i)=>{const d=document.createElement('button');d.type='button';d.setAttribute('aria-label','Go to item '+(i+1));d.addEventListener('click',()=>go(i));dots.appendChild(d)});
- function go(i){index=(i+items.length)%items.length;track.style.transform=`translateX(-${index*100}%)`;[...dots.children].forEach((d,n)=>d.classList.toggle('active',n===index));}
+ const isCertificate=root.classList.contains('cert-carousel')||root.classList.contains('internship-carousel');
+ const internshipFrame=root.closest('.internship-browser');
+ const designTabs=internshipFrame?[...internshipFrame.querySelectorAll('.project-tabs button')]:[];
+ designTabs.forEach((tab,n)=>{tab.addEventListener('click',()=>go(n));tab.addEventListener('keydown',event=>{const next=event.key==='ArrowRight'?(n+1)%items.length:event.key==='ArrowLeft'?(n+items.length-1)%items.length:event.key==='Home'?0:event.key==='End'?items.length-1:null;if(next!==null){event.preventDefault();go(next);designTabs[next].focus();}});});
+ let counter;
+ if(isCertificate){counter=document.createElement('span');counter.className='certificate-counter';counter.setAttribute('aria-live','polite');root.append(counter);root.setAttribute('aria-label',root.classList.contains('internship-carousel')?'Internship graphic designs':'Certificates');}
+ function go(i){index=(i+items.length)%items.length;track.style.transform=`translateX(-${index*100}%)`;[...dots.children].forEach((d,n)=>d.classList.toggle('active',n===index));if(isCertificate){counter.textContent=String(index+1).padStart(2,'0')+' / '+String(items.length).padStart(2,'0');items.forEach((item,n)=>{item.inert=n!==index;item.setAttribute('aria-hidden',String(n!==index));});}if(internshipFrame){designTabs.forEach((tab,n)=>{tab.setAttribute('aria-selected',String(n===index));tab.tabIndex=n===index?0:-1;});internshipFrame.querySelector('.work-address-title').textContent=designTabs[index].textContent;}}
  prev?.addEventListener('click',()=>go(index-1));next?.addEventListener('click',()=>go(index+1));go(0);
 }
 document.querySelectorAll('[data-carousel]').forEach(initCarousel);
@@ -189,6 +352,11 @@ document.querySelectorAll('main img').forEach((image,index)=>{if(index>1)image.l
 (function(){
   const splash = document.getElementById('site-splash');
   if(!splash) return;
+  // Never restore an unfinished intro when navigating back from another page.
+  window.addEventListener('pagehide',()=>{
+    document.documentElement.classList.add('no-splash');
+    splash.remove();
+  },{once:true});
 
   if(document.documentElement.classList.contains('no-splash')){
     splash.remove();

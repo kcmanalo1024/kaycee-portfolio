@@ -7,7 +7,25 @@
 <meta property="og:description" content="Designing thoughtful interfaces and building functional digital experiences.">
 <meta property="og:image" content="assets/images/kaycee-studio.jpg">
 <title>Kaycee Manalo — UI/UX Designer &amp; Front-end Developer</title>
-
+<script>
+// Decide before the splash markup is painted, including local-file return links.
+(function(){
+  const key='keysimadeit:intro-seen';
+  let skip=['#work','#more-work','#featured-work'].includes(location.hash);
+  try{
+    skip=skip||sessionStorage.getItem(key)==='1';
+    sessionStorage.setItem(key,'1');
+  }catch(error){/* Browsing still works when session storage is unavailable. */}
+  try{
+    const previous=document.referrer?new URL(document.referrer):null;
+    const current=new URL(location.href);
+    skip=skip||(previous&&previous.origin===current.origin&&new URL('.',previous).href===new URL('.',current).href);
+    skip=skip||performance.getEntriesByType('navigation')[0]?.type==='back_forward';
+  }catch(error){/* Referrer and navigation timing are optional fallbacks. */}
+  if(skip)document.documentElement.classList.add('no-splash');
+})();
+</script>
+<style>html.no-splash #site-splash{display:none!important}</style>
 
 <link rel="stylesheet" href="style.css">
 </head>

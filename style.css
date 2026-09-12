@@ -1134,3 +1134,125 @@ html[data-theme="light"] .cert-carousel .carousel-item{background:linear-gradien
 .learn-tabs .learn-tab-indicator{display:none}
 .work-tabs button:focus-visible,.learn-tabs .learn-tab:focus-visible{outline:2px solid var(--text);outline-offset:-3px}
 @media(max-width:600px){.work-tabs,.learn-tabs{gap:2px;padding:3px;margin-bottom:24px}.work-tabs button,.learn-tabs .learn-tab{gap:5px;padding:9px 11px;font-size:.75rem}.tab-icon{width:16px;height:16px}}
+
+/* Selected Work: browser-inspired project viewer, using the portfolio theme. */
+#work .work-tabs[hidden]{display:none}
+.work-category{display:flex;align-items:center;gap:18px;margin-bottom:26px}
+.work-category>span{font:9px "DM Mono",monospace;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+.work-category select{min-width:210px;padding:13px 38px 13px 16px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text);font:inherit;font-size:.8rem;cursor:pointer}
+.work-browser{overflow:hidden;border:1px solid var(--line);border-radius:22px;background:var(--panel)}
+.work-browser-top{display:flex;align-items:stretch;min-height:62px;background:var(--panel2);border-bottom:1px solid var(--line)}
+.work-window-dots{display:flex;align-items:center;gap:5px;padding:0 22px}
+.work-window-dots i{width:7px;height:7px;border-radius:50%;background:var(--muted)}
+.project-tabs{display:flex;min-width:0;overflow-x:auto;gap:0;padding:0 10px 10px 0;scrollbar-width:thin}
+.project-tabs button{position:relative;isolation:isolate;display:flex;align-items:center;justify-content:center;gap:9px;flex-shrink:0;padding:15px 26px;border:0;border-radius:0;background:transparent;color:var(--muted);font:inherit;font-size:.75rem;white-space:nowrap;cursor:pointer}
+.project-tabs button::before{content:"";width:9px;height:9px;flex-shrink:0;border-radius:3px;background:var(--muted);transform:rotate(-6deg)}
+.project-tabs button::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:var(--bg);opacity:0;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 50' preserveAspectRatio='none'%3E%3Cpath fill='white' d='M0 0H200C190 0 187 8 184 19L179 38Q176 50 164 50H36Q24 50 21 38L16 19C13 8 10 0 0 0Z'/%3E%3C/svg%3E") center/100% 100% no-repeat}
+.project-tabs button[aria-selected="true"]{color:var(--text)}
+.project-tabs button[aria-selected="true"]::after{opacity:1;box-shadow:inset 0 1px 0 var(--muted)}
+.project-tabs button:focus-visible{outline:2px solid var(--lime);outline-offset:-7px;border-radius:12px}
+.project-tabs button[aria-selected="true"]::before{background:var(--lime)}
+.work-browser-toolbar{display:flex;align-items:center;gap:8px;padding:13px 18px;border-bottom:1px solid var(--line)}
+.work-browser-toolbar>button{width:32px;height:32px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);color:var(--text);font:22px Inter,Arial,sans-serif;cursor:pointer}
+.work-browser-toolbar>button:hover{border-color:var(--lime);color:var(--lime)}
+.work-address{display:flex;align-items:center;gap:13px;min-width:0;flex:1;margin-left:10px;padding:12px 16px;border:1px solid var(--line);border-radius:8px;color:var(--text);text-decoration:none;font-size:.75rem}
+.work-address-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.work-address>span:first-child,.work-address>span:last-child{color:var(--lime)}
+#work .work-browser .spotlight-grid,#work .work-browser .featured-grid{display:block}
+#work .work-browser article[hidden]{display:none!important}
+#work .work-browser article{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:0;border:0;border-radius:0;margin:0;max-width:none;background:var(--panel);box-shadow:none;transform:none}
+#work .work-browser .featured-media{height:100%;min-height:390px;border:0;border-radius:0;background:var(--panel2)}
+#work .work-browser .spotlight-copy,#work .work-browser .featured-copy{padding:38px 32px;align-self:center}
+#work .work-browser h3{font-size:clamp(1.6rem,2.6vw,2.4rem);color:var(--text);margin:12px 0}
+#work .work-browser p,#work .work-browser dd{color:var(--muted)}
+#work .work-browser dl{border-color:var(--line)}
+#work .work-browser .featured-link{display:inline-flex;align-items:center;justify-content:space-between;gap:24px;align-self:flex-start;padding:13px 20px;margin-top:8px;border:0;border-radius:999px;background:var(--lime);color:var(--bg);font-size:.75rem}
+#work .work-browser .cdp-thumb-main{height:66%;width:67%}
+#work .work-browser .cdp-thumb img{object-fit:contain;background:var(--bg)}
+@media(max-width:700px){
+ .work-window-dots{padding:0 12px;gap:4px}.work-window-dots i{width:5px;height:5px}
+ .project-tabs button{padding:13px 22px;font-size:.7rem}.work-browser-top{min-height:54px}
+ .work-browser-toolbar{padding:10px;gap:5px}.work-address{margin-left:3px;padding:10px;gap:8px}
+ #work .work-browser article{grid-template-columns:1fr}
+ #work .work-browser .featured-media{height:310px;min-height:0}
+ #work .work-browser .spotlight-copy,#work .work-browser .featured-copy{padding:26px 22px}
+ .work-category{gap:12px}.work-category select{min-width:0;flex:1;max-width:240px}
+}
+
+/* Education shares Selected Work's browser frame and selected-tab treatment. */
+.education-browser .learn-panel{padding:12px 32px 32px}
+.education-browser .learn-panel[hidden]{display:none!important}
+.education-browser .project-tabs .tab-icon{display:none}
+.education-browser .learn-panel-intro{margin-top:20px;color:var(--muted)}
+.education-browser .education-row:last-child{border-bottom:0}
+.education-browser .work-address{min-height:40px}
+@media(max-width:700px){
+ .education-browser .learn-panel{padding:8px 18px 24px}
+ .education-browser .project-tabs button{padding-inline:20px}
+}
+
+/* Certificate showcase: document preview and details, with controls below. */
+#panel-certifications .cert-carousel{grid-template-columns:42px 42px minmax(0,1fr);grid-template-rows:auto auto;gap:18px 12px;margin-top:24px}
+.cert-carousel .carousel-window{grid-column:1/-1;grid-row:1}
+.cert-carousel .carousel-arrow.prev{grid-column:1;grid-row:2}
+.cert-carousel .carousel-arrow.next{grid-column:2;grid-row:2}
+.cert-carousel .carousel-dots{display:none}
+.certificate-counter{grid-column:3;grid-row:2;color:var(--muted);font:10px "DM Mono",monospace;letter-spacing:.12em;margin-left:8px}
+#education .cert-carousel .certificate-slide{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:clamp(24px,5vw,64px);padding:26px;cursor:default;background:var(--panel);border:1px solid var(--line);font:inherit;color:var(--text);box-shadow:none}
+.certificate-preview{display:flex;flex-direction:column;align-items:center;gap:16px;min-width:0;width:100%;padding:18px;border:1px solid var(--line);border-radius:12px;background:var(--panel2);color:var(--lime);font:inherit;cursor:zoom-in}
+#education .certificate-preview img{display:block;width:100%;height:350px;padding:0;object-fit:contain;background:transparent}
+.certificate-view{font-size:.75rem;line-height:1.5}
+#education .cert-carousel .cert-info{padding:12px 0!important;border:0;text-align:left;min-width:0}
+#education .cert-carousel .cert-info>span{display:block;margin:0;font:10px "DM Mono",monospace!important;letter-spacing:.12em;text-transform:uppercase;color:var(--lime)!important}
+#education .cert-carousel .cert-info h3{margin:20px 0 22px;color:var(--text);font-size:clamp(1.5rem,2.8vw,2.5rem);line-height:1.15;letter-spacing:-.045em}
+#education .cert-carousel .cert-info small{display:block;color:var(--muted)!important;font:inherit;font-size:.8rem!important;line-height:1.8}
+#education .cert-carousel .cert-info .cert-description{margin-top:12px;font-size:.9rem!important}
+@media(max-width:700px){
+ #education .cert-carousel .certificate-slide{grid-template-columns:1fr;gap:14px;padding:18px}
+ #education .certificate-preview img{height:300px}
+ #education .cert-carousel .cert-info h3{margin:14px 0}
+}
+@media(prefers-reduced-motion:reduce){.cert-carousel .carousel-track{transition:none}}
+
+/* Internship graphic design showcase. */
+.internship-intro{margin:0 0 24px;max-width:740px}
+.internship-intro h3{font-size:1rem;color:var(--text);margin:0 0 10px}
+.internship-intro p{font-size:.8rem;line-height:1.75;color:var(--muted);margin:0}
+.internship-carousel{grid-template-columns:42px 42px minmax(0,1fr);grid-template-rows:auto auto;gap:20px 12px}
+.internship-carousel .carousel-window{grid-column:1/-1;grid-row:1}
+.internship-carousel .prev{grid-column:1;grid-row:2}
+.internship-carousel .next{grid-column:2;grid-row:2}
+.internship-carousel .carousel-dots{display:none}
+#work .internship-slide{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:clamp(24px,5vw,64px);padding:26px;border:1px solid var(--line);border-radius:18px;background:var(--panel);color:var(--text);font:inherit;cursor:default;box-shadow:none}
+.internship-preview{display:flex;flex-direction:column;align-items:center;gap:16px;min-width:0;width:100%;padding:18px;border:1px solid var(--line);border-radius:12px;background:var(--panel2);color:var(--lime);font:inherit;cursor:zoom-in}
+#work .internship-preview img{width:100%;height:390px;object-fit:contain;background:transparent;border-radius:0}
+.internship-preview>span{font-size:.75rem;line-height:1.5}
+.internship-copy{min-width:0;padding:12px 0}
+.internship-type{font:10px "DM Mono",monospace;color:var(--lime);text-transform:uppercase;letter-spacing:.12em}
+.internship-copy h3{font-size:clamp(1.6rem,2.8vw,2.5rem);line-height:1.15;letter-spacing:-.045em;margin:20px 0 22px}
+.internship-copy p{font-size:.85rem;line-height:1.85;color:var(--muted);margin:0}
+.internship-note{margin-top:26px;padding:18px;border-left:1px solid var(--lime);background:var(--panel2);border-radius:0 8px 8px 0}
+.internship-note strong{font-size:.8rem;font-weight:600}
+.internship-note p{margin-top:8px;font-size:.78rem}
+.internship-carousel .carousel-arrow{background:var(--panel);color:var(--text);border-color:var(--line)}
+.internship-carousel .carousel-arrow:hover{color:var(--lime);border-color:var(--lime)}
+@media(max-width:700px){
+ #work .internship-slide{grid-template-columns:1fr;gap:16px;padding:18px}
+ #work .internship-preview img{height:330px}
+ .internship-copy h3{margin:14px 0}
+ .work-category select{max-width:270px}
+}
+@media(prefers-reduced-motion:reduce){.internship-carousel .carousel-track{transition:none}}
+
+/* Keep internship designs inside the shared browser-style navigation. */
+.internship-browser .internship-carousel{padding-bottom:20px}
+.internship-browser .internship-carousel>.prev{margin-left:20px}
+.internship-browser .internship-carousel>.next{margin-left:20px}
+.internship-browser .certificate-counter{margin-left:28px}
+#work .internship-browser .internship-slide{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,64px);border-radius:0}
+@media(max-width:700px){#work .internship-browser .internship-slide{grid-template-columns:1fr;gap:16px}}
+
+/* Internship designs use the browser navigation above the preview. */
+.internship-browser .internship-carousel{grid-template-columns:minmax(0,1fr);grid-template-rows:auto;gap:0;padding-bottom:0}
+.internship-browser .internship-carousel>.carousel-arrow,
+.internship-browser .internship-carousel>.certificate-counter{display:none}
