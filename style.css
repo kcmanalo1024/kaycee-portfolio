@@ -1486,6 +1486,26 @@ main>section{position:relative;isolation:isolate}
 main>section::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:var(--page-grain);background-repeat:repeat;background-size:180px 180px;opacity:.065}
 html[data-theme="light"] main>section::before{opacity:.045}
 
+/* Personal projects keep the shared browser tabs and a gallery within each project. */
+.personal-intro{margin:0 0 26px}
+.personal-intro h3{font:400 clamp(1.6rem,3vw,2.2rem) var(--font-display);margin:0 0 10px}
+.personal-intro p{color:var(--muted);font-size:.85rem;line-height:1.8;margin:0;max-width:720px}
+#work .personal-browser .personal-project{display:block;padding:28px;background:transparent;border:0;border-radius:0}
+#work .personal-browser .personal-project[hidden]{display:none}
+.personal-project-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,64px);align-items:center}
+.personal-art{min-width:0}
+#work .personal-preview img{height:390px;width:100%;object-fit:contain}
+.personal-art-caption{margin:24px 0 18px;padding-top:22px;border-top:1px solid var(--line)}
+.personal-art-caption h4{font:400 1.5rem var(--font-display);margin:0 0 10px;color:var(--text)}
+.personal-image-count{display:block;font-size:.7rem;color:var(--lime);letter-spacing:.08em}
+.personal-gallery{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
+.personal-gallery button{width:76px;height:86px;padding:5px;border:1px solid var(--line);border-radius:9px;background:var(--panel2);cursor:pointer;box-shadow:inset 0 1px 0 var(--depth-edge),0 3px 8px var(--depth-shadow)}
+#work .personal-gallery button img{width:100%;height:100%;object-fit:contain;border-radius:4px}
+.personal-gallery button[aria-pressed="true"]{border-color:var(--lime);box-shadow:0 0 0 1px var(--lime),0 4px 10px var(--depth-shadow)}
+.personal-gallery button:hover{border-color:var(--lime)}
+.personal-gallery button:focus-visible,.personal-preview:focus-visible{outline:2px solid var(--lime);outline-offset:4px}
+@media(max-width:700px){#work .personal-browser .personal-project{padding:18px}.personal-project-layout{grid-template-columns:1fr;gap:20px}#work .personal-preview img{height:330px}.personal-gallery{gap:8px}.personal-gallery button{width:62px;height:74px}}
+
 /* Karibok uses the supplied branding artwork while the product is in development. */
 #work #featured-work .work-browser .karibok-media{display:flex;align-items:center;justify-content:center}
 #work #featured-work .work-browser .karibok-media img{width:100%;height:100%;object-fit:contain;object-position:center;padding:0;filter:none;transform:none}

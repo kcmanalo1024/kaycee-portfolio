@@ -36,7 +36,8 @@ if(work&&moreWork&&designs){
   const featured=document.createElement('div');
   featured.id='featured-work';
   featured.append(work.querySelector('.spotlight-grid'));
-  const categories=[['Featured Work',featured],['Academic Work',moreWork],['Internship Graphic Design',designs]];
+  const personalWork=createPersonalWork();
+  const categories=[['Featured Work',featured],['Academic Work',moreWork],['Internship Graphic Design',designs],['Personal & Concept Design',personalWork]];
   const tablist=document.createElement('div');
   tablist.className='work-tabs';
   tablist.setAttribute('role','tablist');
@@ -65,7 +66,7 @@ if(work&&moreWork&&designs){
     panel.setAttribute('aria-labelledby',tab.id);panel.tabIndex=0;
     tab.addEventListener('click',()=>activate(index));
     tab.addEventListener('keydown',event=>{
-      const next=event.key==='ArrowRight'?(index+1)%3:event.key==='ArrowLeft'?(index+2)%3:event.key==='Home'?0:event.key==='End'?2:null;
+      const next=event.key==='ArrowRight'?(index+1)%categories.length:event.key==='ArrowLeft'?(index+categories.length-1)%categories.length:event.key==='Home'?0:event.key==='End'?categories.length-1:null;
       if(next!==null){event.preventDefault();activate(next,true);}
     });
     tablist.append(tab);container.append(panel);
