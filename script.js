@@ -239,40 +239,45 @@ mobileMenu?.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMen
 mobileMenu?.addEventListener('keydown',e=>{if(e.key!=='Tab')return;const items=[...mobileMenu.querySelectorAll('a,button:not([disabled])')];const first=items[0],last=items.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}});
 // Education / Certifications tab switcher.
 function initLearnTabs(root){
-  const tabs=[...root.querySelectorAll('.learn-tab')],indicator=root.querySelector('.learn-tab-indicator');
-  const panels=root.parentElement.querySelectorAll('.learn-panel');
-  const frame=document.createElement('div');
-  frame.className='work-browser education-browser';
-  frame.innerHTML='<div class="work-browser-top"><span class="work-window-dots" aria-hidden="true"><i></i><i></i><i></i></span></div><div class="work-browser-toolbar"><button type="button" class="learn-prev" aria-label="Previous education category">‹</button><button type="button" class="learn-next" aria-label="Next education category">›</button><div class="work-address"><span aria-hidden="true">▣</span><span class="work-address-title" aria-live="polite"></span></div></div>';
-  root.before(frame);
-  root.classList.remove('learn-tabs','reveal');
-  root.classList.add('project-tabs');
-  indicator?.remove();
-  frame.querySelector('.work-browser-top').append(root);
-  panels.forEach(panel=>{panel.tabIndex=0;frame.append(panel);});
-  function place(tab){if(!indicator||!tab)return;indicator.style.width=tab.offsetWidth+'px';indicator.style.transform=`translateX(${tab.offsetLeft}px)`;}
-  function activate(tab){
-    tabs.forEach(t=>{const on=t===tab;t.classList.toggle('active',on);t.setAttribute('aria-selected',String(on));t.tabIndex=on?0:-1;});
-    panels.forEach(p=>{const on=p.id===tab.dataset.target;p.classList.toggle('active',on);p.hidden=!on;if(on)p.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));});
-    frame.querySelector('.work-address-title').textContent=tab.textContent.trim();
-    place(tab);
-  }
-  tabs.forEach((tab,index)=>{
-    tab.addEventListener('click',()=>activate(tab));
-    tab.addEventListener('keydown',event=>{
-      const next=event.key==='ArrowRight'?(index+1)%tabs.length:event.key==='ArrowLeft'?(index+tabs.length-1)%tabs.length:event.key==='Home'?0:event.key==='End'?tabs.length-1:null;
-      if(next!==null){event.preventDefault();activate(tabs[next]);tabs[next].focus();}
+  const container=root.parentElement;
+  const panels=[...container.querySelectorAll('.learn-panel')];
+  const picker=document.createElement('label');picker.className='work-category';
+  picker.innerHTML='<span>Learning category</span><select aria-label="Learning category"><option>Education</option><option>Certifications</option></select>';
+  root.replaceWith(picker);
+  const select=picker.querySelector('select');
+  panels.forEach((panel,group)=>{
+    const label=group===0?'Education':'Certifications';
+    panel.removeAttribute('aria-labelledby');panel.setAttribute('role','region');panel.setAttribute('aria-label',label);
+    let cards=[...panel.querySelectorAll(group===0?'.education-row':'.certificate-slide')];
+    if(group===0){const schools=document.createElement('div');schools.className='education-schools';schools.append(...cards);cards=[schools];}
+    const frame=document.createElement('div');frame.className='work-browser education-browser learning-browser';
+    frame.innerHTML='<div class="work-browser-top"><span class="work-window-dots" aria-hidden="true"><i></i><i></i><i></i></span><div class="project-tabs" role="tablist"></div></div><div class="work-browser-toolbar"><button type="button" class="learn-prev" aria-label="Previous item">‹</button><button type="button" class="learn-next" aria-label="Next item">›</button><div class="work-address"><span aria-hidden="true">▣</span><span class="work-address-title"></span></div></div><div class="learning-cards"></div>';
+    const tabs=frame.querySelector('.project-tabs');tabs.setAttribute('aria-label',label+' items');
+    if(group===1)frame.querySelector('.learning-cards').classList.add('cert-carousel');
+    let current=0;
+    const show=(index,focus=false)=>{
+      current=(index+cards.length)%cards.length;
+      cards.forEach((card,i)=>{card.hidden=i!==current;card.classList.add('visible');card.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));tabs.children[i].setAttribute('aria-selected',String(i===current));tabs.children[i].tabIndex=i===current?0:-1;});
+      frame.querySelector('.work-address-title').textContent=tabs.children[current].textContent;
+      if(focus)tabs.children[current].focus();
+    };
+    cards.forEach((card,index)=>{
+      const title=group===0?'Education':card.querySelector('h3').textContent.trim();
+      const tab=document.createElement('button');tab.type='button';tab.textContent=title;tab.id='learning-tab-'+group+'-'+index;
+      card.id='learning-card-'+group+'-'+index;card.setAttribute('role','tabpanel');card.setAttribute('aria-labelledby',tab.id);card.tabIndex=0;
+      tab.setAttribute('role','tab');tab.setAttribute('aria-controls',card.id);
+      tab.addEventListener('click',()=>show(index));
+      tab.addEventListener('keydown',event=>{const next=event.key==='ArrowRight'?index+1:event.key==='ArrowLeft'?index-1:event.key==='Home'?0:event.key==='End'?cards.length-1:null;if(next!==null){event.preventDefault();show(next,true);}});
+      tabs.append(tab);frame.querySelector('.learning-cards').append(card);
     });
+    panel.replaceChildren(frame);
+    if(group===0){frame.querySelector('.learn-prev').hidden=true;frame.querySelector('.learn-next').hidden=true;}
+    frame.querySelector('.learn-prev').addEventListener('click',()=>show(current-1));
+    frame.querySelector('.learn-next').addEventListener('click',()=>show(current+1));show(0);
   });
-  const step=direction=>activate(tabs[(tabs.findIndex(tab=>tab.classList.contains('active'))+direction+tabs.length)%tabs.length]);
-  frame.querySelector('.learn-prev').addEventListener('click',()=>step(-1));
-  frame.querySelector('.learn-next').addEventListener('click',()=>step(1));
-  const initial=tabs.find(t=>t.classList.contains('active'))||tabs[0];
-  activate(initial);
-  window.addEventListener('resize',()=>place(tabs.find(t=>t.classList.contains('active'))||tabs[0]));
+  const activate=()=>panels.forEach((panel,index)=>{const on=index===select.selectedIndex;panel.hidden=!on;panel.classList.toggle('active',on);});
+  select.addEventListener('change',activate);activate();
 }
-document.querySelectorAll('.learn-tabs').forEach(initLearnTabs);
-
 // Decorative line icons keep each tab's text as its accessible name.
 const tabIconPaths={
   'Featured Work':'<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/>',
@@ -302,6 +307,38 @@ document.querySelectorAll('.cert-carousel .cert-item').forEach(button=>{
  button.setAttribute('aria-label','View certificate: '+heading.textContent);
  const caption=document.createElement('span');caption.className='certificate-view';caption.textContent='View certificate ↗';
  button.append(caption);slide.append(button,info);
+});
+
+document.querySelectorAll('.learn-tabs').forEach(initLearnTabs);
+// Uniform tabs retain full accessible names while long visible labels fade out.
+const projectTabLabels=[];
+document.querySelectorAll('#work .project-tabs button,#education .project-tabs button').forEach(tab=>{
+  const title=tab.textContent.trim();
+  const label=document.createElement('span');label.className='project-tab-label';label.textContent=title;
+  tab.replaceChildren(label);tab.title=title;tab.setAttribute('aria-label',title);projectTabLabels.push(label);
+});
+const updateTabOverflow=()=>projectTabLabels.forEach(label=>label.classList.toggle('is-truncated',label.scrollWidth>label.clientWidth));
+if('ResizeObserver' in window){const tabResize=new ResizeObserver(updateTabOverflow);projectTabLabels.forEach(label=>tabResize.observe(label));}
+window.addEventListener('resize',updateTabOverflow);requestAnimationFrame(updateTabOverflow);
+// Shared category picker with a styled menu and full keyboard navigation.
+document.querySelectorAll('.work-category select').forEach((select,index)=>{
+  const old=select.parentElement,group=document.createElement('div');group.className='work-category';
+  group.append(...old.childNodes);old.replaceWith(group);select.hidden=true;
+  const dropdown=document.createElement('div');dropdown.className='category-dropdown';
+  const trigger=document.createElement('button');trigger.type='button';trigger.className='category-trigger';
+  trigger.innerHTML='<span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>';
+  trigger.setAttribute('aria-haspopup','listbox');trigger.setAttribute('aria-expanded','false');trigger.setAttribute('aria-controls','category-options-'+index);
+  const menu=document.createElement('div');menu.className='category-options';menu.id='category-options-'+index;menu.setAttribute('role','listbox');menu.setAttribute('aria-label',select.getAttribute('aria-label'));menu.hidden=true;
+  const options=[...select.options].map((option,i)=>{const button=document.createElement('button');button.type='button';button.textContent=option.text;button.setAttribute('role','option');button.tabIndex=-1;button.addEventListener('click',()=>{select.selectedIndex=i;select.dispatchEvent(new Event('change',{bubbles:true}));sync();close(true);});menu.append(button);return button;});
+  const sync=()=>{trigger.querySelector('span').textContent=select.options[select.selectedIndex].text;trigger.setAttribute('aria-label',select.getAttribute('aria-label')+': '+select.options[select.selectedIndex].text);options.forEach((option,i)=>option.setAttribute('aria-selected',String(i===select.selectedIndex)));};
+  const close=(focus=false)=>{menu.hidden=true;trigger.setAttribute('aria-expanded','false');if(focus)trigger.focus();};
+  const open=()=>{menu.hidden=false;trigger.setAttribute('aria-expanded','true');options[select.selectedIndex].focus();};
+  trigger.addEventListener('click',()=>menu.hidden?open():close());
+  trigger.addEventListener('keydown',event=>{if(['ArrowDown','ArrowUp'].includes(event.key)){event.preventDefault();open();}});
+  menu.addEventListener('keydown',event=>{const current=options.indexOf(document.activeElement);const next=event.key==='ArrowDown'?(current+1)%options.length:event.key==='ArrowUp'?(current+options.length-1)%options.length:event.key==='Home'?0:event.key==='End'?options.length-1:null;if(next!==null){event.preventDefault();options[next].focus();}if(event.key==='Escape'){event.preventDefault();close(true);}if(event.key==='Tab')close();});
+  document.addEventListener('click',event=>{if(!dropdown.contains(event.target))close();});
+  select.addEventListener('change',sync);window.addEventListener('hashchange',()=>requestAnimationFrame(sync));
+  dropdown.append(trigger,menu);group.append(dropdown);sync();
 });
 
 function initCarousel(root){
@@ -334,13 +371,53 @@ document.querySelectorAll('[data-standees]').forEach(initStandeeCarousel);
 
 
 const lightbox=document.getElementById('lightbox'),lightboxImg=document.getElementById('lightbox-img');
-document.querySelectorAll('[data-lightbox]').forEach(el=>el.addEventListener('click',()=>{if(!lightbox||!lightboxImg)return;lightboxImg.src=el.dataset.lightbox;lightbox.classList.add('open');lightbox.setAttribute('aria-hidden','false')}));
-function closeBox(){lightbox?.classList.remove('open');if(lightboxImg)lightboxImg.src='';lightbox?.setAttribute('aria-hidden','true')}
+let lightboxReturnFocus=null,lightboxOverflow='',lightboxInert=[];
+if(lightbox&&lightboxImg){
+  lightbox.classList.add('asset-viewer');lightbox.setAttribute('role','dialog');lightbox.setAttribute('aria-modal','true');lightbox.setAttribute('aria-labelledby','asset-viewer-title');
+  const shell=document.createElement('div');shell.className='asset-viewer-shell';
+  shell.innerHTML='<div class="asset-viewer-header"><div><span class="asset-viewer-kicker">Portfolio preview</span><h2 id="asset-viewer-title"></h2></div><button id="close-lightbox" type="button" aria-label="Close preview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div><div class="asset-viewer-stage"></div><div class="asset-viewer-footer"><span>Press Esc or click outside to close</span><a class="asset-viewer-original" target="_blank" rel="noopener">Open full-size image ↗</a></div>';
+  shell.querySelector('.asset-viewer-stage').append(lightboxImg);lightbox.replaceChildren(shell);
+}
+document.querySelectorAll('[data-lightbox]').forEach(el=>el.addEventListener('click',()=>{
+  if(!lightbox||!lightboxImg)return;
+  const title=el.closest('.certificate-slide,.internship-slide')?.querySelector('h3')?.textContent||el.querySelector('img')?.alt||'Design preview';
+  lightbox.querySelector('#asset-viewer-title').textContent=title;
+  lightbox.querySelector('.asset-viewer-kicker').textContent=el.classList.contains('certificate-preview')?'Certificate':'Design preview';
+  lightbox.querySelector('.asset-viewer-original').href=el.dataset.lightbox;
+  lightboxImg.alt=title;lightboxImg.src=el.dataset.lightbox;
+  lightboxReturnFocus=el;lightboxOverflow=document.body.style.overflow;document.body.style.overflow='hidden';
+  lightboxInert=[...document.body.children].filter(child=>child!==lightbox&&!child.inert);lightboxInert.forEach(child=>child.inert=true);
+  lightbox.classList.add('open');lightbox.setAttribute('aria-hidden','false');lightbox.querySelector('#close-lightbox').focus();
+}));
+function closeBox(){if(!lightbox?.classList.contains('open'))return;lightbox.classList.remove('open');if(lightboxImg)lightboxImg.src='';lightbox.setAttribute('aria-hidden','true');document.body.style.overflow=lightboxOverflow;lightboxInert.forEach(child=>child.inert=false);lightboxInert=[];lightboxReturnFocus?.focus();}
+lightbox?.addEventListener('keydown',event=>{if(event.key!=='Tab')return;const controls=[...lightbox.querySelectorAll('button,a[href]')];const first=controls[0],last=controls.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
 document.getElementById('close-lightbox')?.addEventListener('click',closeBox);lightbox?.addEventListener('click',e=>{if(e.target===lightbox)closeBox()});document.addEventListener('keydown',e=>e.key==='Escape'&&closeBox());
 
 // Keep the first visual responsive; defer lower-page images until needed.
 document.querySelectorAll('main img').forEach((image,index)=>{if(index>1)image.loading='lazy';image.decoding='async'});
 
+
+// Consistent decorative icons add cues without repeating accessible labels.
+const detailIconPaths={
+ search:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>',
+ structure:'<rect x="8" y="3" width="8" height="5" rx="1"/><path d="M12 8v4M5 16v-4h14v4"/><rect x="2" y="16" width="6" height="5" rx="1"/><rect x="16" y="16" width="6" height="5" rx="1"/>',
+ design:'<path d="m4 16-1 5 5-1L20 8l-4-4Z M13 7l4 4"/>',
+ code:'<path d="m7 6-5 6 5 6m10-12 5 6-5 6m-4-15-2 18"/>',
+ check:'<path d="m9 12 2 2 4-4"/><rect x="3" y="3" width="18" height="18" rx="5"/>',
+ tools:'<path d="M14 6a5 5 0 0 0-6 6l-5 5a2 2 0 0 0 4 4l5-5a5 5 0 0 0 6-6l-3 3-4-4Z"/>'
+};
+function detailIcon(name){const icon=document.createElementNS('http://www.w3.org/2000/svg','svg');icon.setAttribute('viewBox','0 0 24 24');icon.setAttribute('class','detail-icon');icon.setAttribute('fill','none');icon.setAttribute('stroke','currentColor');icon.setAttribute('stroke-width','1.6');icon.setAttribute('stroke-linecap','round');icon.setAttribute('stroke-linejoin','round');icon.setAttribute('aria-hidden','true');icon.innerHTML=detailIconPaths[name];return icon;}
+document.querySelectorAll('.process-list h3').forEach((heading,index)=>heading.prepend(detailIcon(['search','structure','design','code','check'][index]||'check')));
+document.querySelectorAll('.skills-grid h3').forEach((heading,index)=>heading.prepend(detailIcon(['design','code','structure','tools'][index]||'tools')));
+
+const backToTop=document.querySelector('.back-to-top');
+if(backToTop){
+  document.body.append(backToTop);
+  const updateBackToTop=()=>{const visible=window.scrollY>300;backToTop.classList.toggle('is-visible',visible);backToTop.tabIndex=visible?0:-1;backToTop.setAttribute('aria-hidden',String(!visible));};
+  window.addEventListener('scroll',updateBackToTop,{passive:true});
+  window.addEventListener('pageshow',updateBackToTop);
+  updateBackToTop();
+}
 
 /* Branded intro splash — shows once per browser session only.
    The head of the document already checked sessionStorage and, if the
