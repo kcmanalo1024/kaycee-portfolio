@@ -1486,6 +1486,33 @@ main>section{position:relative;isolation:isolate}
 main>section::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:var(--page-grain);background-repeat:repeat;background-size:180px 180px;opacity:.065}
 html[data-theme="light"] main>section::before{opacity:.045}
 
+/* Karibok uses the supplied branding artwork while the product is in development. */
+#work #featured-work .work-browser .karibok-media{display:flex;align-items:center;justify-content:center}
+#work #featured-work .work-browser .karibok-media img{width:100%;height:100%;object-fit:contain;object-position:center;padding:0;filter:none;transform:none}
+.project-status{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;padding:7px 10px;margin:4px 0 16px;border:1px solid var(--line);border-radius:7px;color:var(--text);background:var(--panel2);font:500 .68rem/1.4 var(--font-body)}
+.project-status i{width:6px;height:6px;flex-shrink:0;border-radius:50%;background:var(--lime);box-shadow:0 0 0 3px rgba(185,106,165,.12)}
+.karibok-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.8fr);gap:48px;align-items:center}
+.karibok-page{background:radial-gradient(900px 650px at 90% 5%,rgba(185,106,165,.14),transparent 70%),radial-gradient(800px 700px at 0% 38%,rgba(89,103,255,.09),transparent 70%),radial-gradient(850px 650px at 90% 80%,rgba(185,106,165,.08),transparent 70%),var(--bg)}
+.karibok-page .case-hero-dark{background:transparent}
+.nav-cta.karibok-back{display:inline-flex;align-items:center;white-space:nowrap;background-color:var(--panel)}
+.karibok-page .case-hero-dark h1{font-size:clamp(3.8rem,8vw,7.5rem);overflow-wrap:anywhere}
+.karibok-brand-preview{margin:0;padding:14px;border:1px solid var(--line);border-radius:20px;background:var(--panel);box-shadow:inset 0 1px 0 var(--depth-edge),0 20px 48px var(--depth-shadow)}
+.karibok-brand-preview img{display:block;width:100%;height:auto;border-radius:12px}
+.karibok-brand-preview figcaption{padding:14px 4px 2px;color:var(--muted);font-size:.7rem;text-align:center}
+.karibok-version-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:28px}
+.karibok-version-grid article{padding:24px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(145deg,var(--depth-sheen),transparent),var(--panel);box-shadow:inset 0 1px 0 var(--depth-edge),0 10px 24px var(--depth-shadow)}
+.karibok-version-grid h3{font-weight:400;font-size:1.65rem;margin:18px 0 12px}
+.karibok-version-grid .eyebrow{color:var(--lime);font-size:9px}
+.karibok-features{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));list-style:none;padding:0;margin:26px 0 0;gap:0 28px}
+.karibok-features li{padding:15px 0;border-bottom:1px solid var(--line);font-size:.85rem;line-height:1.6}
+.karibok-features li::before{content:'○';margin-right:10px;color:var(--lime)}
+.karibok-features small{display:block;margin-left:23px;color:var(--muted);font-size:.68rem}
+.karibok-tools{margin:26px 0 0}
+.karibok-tools>div{display:grid;grid-template-columns:130px minmax(0,1fr);gap:20px;padding:17px 0;border-bottom:1px solid var(--line);font-size:.85rem;line-height:1.6}
+.karibok-tools dt{font-weight:600;color:var(--text)}
+.karibok-tools dd{margin:0;color:var(--muted)}
+@media(max-width:700px){.karibok-hero-grid,.karibok-version-grid{grid-template-columns:1fr;gap:24px}.karibok-brand-preview{max-width:440px;width:100%;justify-self:center}.karibok-features{grid-template-columns:1fr}.karibok-tools>div{grid-template-columns:90px minmax(0,1fr);gap:16px}}
+
 /* Consistent breathing room and layered depth for project previews. */
 #work :is(#featured-work,#more-work) .work-browser article{
   padding:26px;gap:30px;align-items:center;

@@ -15,7 +15,7 @@
  const icon=name=>{const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('class','action-icon');svg.setAttribute('fill','none');svg.setAttribute('stroke','currentColor');svg.setAttribute('stroke-width','1.7');svg.setAttribute('stroke-linecap','round');svg.setAttribute('stroke-linejoin','round');svg.setAttribute('aria-hidden','true');svg.innerHTML=paths[name];return svg;};
  document.querySelectorAll('a.btn,a.nav-cta,a.tb-back,a.featured-link,a.tb-hero-link,.certificate-view,.internship-preview>span').forEach(el=>{
   const label=el.textContent.replace(/[↗→↑]/g,'').trim();
-  const name=/back/i.test(label)?'back':/resume/i.test(label)?'document':/connect|contact|email/i.test(label)?'mail':/case study/i.test(label)?'document':/certificate|design/i.test(label)?'expand':/gallery/i.test(label)?'gallery':/work/i.test(label)?'work':'external';
+  const name=/back/i.test(label)?'back':/resume/i.test(label)?'document':/connect|contact|email/i.test(label)?'mail':/case study|project overview/i.test(label)?'document':/certificate|design/i.test(label)?'expand':/gallery/i.test(label)?'gallery':/work/i.test(label)?'work':'external';
   const text=document.createElement('span');text.textContent=label;el.replaceChildren(icon(name),text);el.classList.add('icon-action');
  });
  const controls=[['.work-prev,.learn-prev,.carousel-arrow.prev,.design-nav.prev','left','Previous item'],['.work-next,.learn-next,.carousel-arrow.next,.design-nav.next','right','Next item'],['#menu-btn','menu','Open menu'],['#menu-close,#close-lightbox,#tb-close','close','Close']];

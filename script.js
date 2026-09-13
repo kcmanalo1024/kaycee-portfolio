@@ -29,6 +29,8 @@ document.querySelectorAll('#more-work .featured-media').forEach(media=>{
 document.querySelectorAll('#more-work .featured-card:nth-child(-n+3)').forEach(card=>card.remove());
 
 // Group the existing work content without recreating its cards or controls.
+const karibokCard=document.getElementById('karibok-featured-card');
+if(karibokCard&&work)work.querySelector('.spotlight-grid').prepend(karibokCard.content.cloneNode(true));
 if(work&&moreWork&&designs){
   const container=work.querySelector('.container');
   const featured=document.createElement('div');
