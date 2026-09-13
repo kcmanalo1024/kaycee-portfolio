@@ -14,6 +14,18 @@ const featuredMedia=[...document.querySelectorAll('#more-work .featured-media')]
 spotlightCards.forEach((card,index)=>{const media=card.querySelector('.spotlight-media');const href=card.querySelector('.spotlight-media')?.getAttribute('href');const source=featuredMedia.find(item=>item.querySelector('.featured-link')?.getAttribute('href')===href)||featuredMedia[index];if(media&&source){media.innerHTML=source.innerHTML;media.className='spotlight-media featured-media '+[...source.classList].filter(name=>name!=='featured-media').join(' ');}});
 const packdMedia=spotlightCards[2]?.querySelector('.spotlight-media');
 if(packdMedia){packdMedia.className='spotlight-media featured-media cdp-prototype-stack packd-prototype-stack pack-feature';packdMedia.innerHTML='<div class="cdp-thumb cdp-thumb-main"><img src="assets/images/packd-up-3.jpeg" alt="Pack’d Up product listing"></div><div class="cdp-thumb cdp-thumb-left"><img src="assets/images/packd-up-2.jpeg" alt="Pack’d Up home interface"></div><div class="cdp-thumb cdp-thumb-right"><img src="assets/images/packd-up-4.jpeg" alt="Pack’d Up storefront interface"></div>';}
+// Give each academic thumbnail the same three-screen stack used by Featured Work.
+const academicStacks={
+  'lms-feature':[['assets/images/lpub-dashboard-1.png','LPUB dashboard overview'],['assets/images/lpub-dashboard-2.png','LPUB dashboard screen'],['assets/images/lpub-dashboard-3.png','LPUB dashboard detail']],
+  'portal-feature':[['assets/images/lpub-portal-1.png','LPUB portal overview'],['assets/images/lpub-portal-2.png','LPUB portal screen'],['assets/images/lpub-portal-3.png','LPUB portal detail']],
+  'meditrack-feature':[['assets/images/meditrack-doctor-1-after.png','MediTrack doctor dashboard'],['assets/images/meditrack-doctor-2-after.png','MediTrack patient record'],['assets/images/meditrack-doctor-3-after.png','MediTrack appointment view']]
+};
+document.querySelectorAll('#more-work .featured-media').forEach(media=>{
+  const key=Object.keys(academicStacks).find(name=>media.classList.contains(name));
+  if(!key)return;
+  media.className='featured-media academic-prototype-stack '+key;
+  media.innerHTML=academicStacks[key].map(([src,alt],index)=>`<div class="cdp-thumb ${index===0?'cdp-thumb-main':index===1?'cdp-thumb-left':'cdp-thumb-right'}"><img src="${src}" alt="${alt}"></div>`).join('');
+});
 document.querySelectorAll('#more-work .featured-card:nth-child(-n+3)').forEach(card=>card.remove());
 
 // Group the existing work content without recreating its cards or controls.
@@ -57,10 +69,24 @@ if(work&&moreWork&&designs){
     tablist.append(tab);container.append(panel);
   });
   const syncHash=()=>{
+    // Case studies return with their project slug; resolve its category and tab.
+    const project=location.hash==='#work'?new URLSearchParams(location.search).get('project'):null;
+    if(project){
+      const categoryIndex=categories.findIndex(([,panel])=>[...panel.querySelectorAll('.featured-link')].some(link=>link.getAttribute('href')===project+'.html'));
+      if(categoryIndex>=0){
+        const panel=categories[categoryIndex][1];
+        const link=[...panel.querySelectorAll('.featured-link')].find(link=>link.getAttribute('href')===project+'.html');
+        const card=link.closest('article');
+        activate(categoryIndex);
+        panel.querySelector('[role="tab"][aria-controls="'+card.id+'"]')?.click();
+        requestAnimationFrame(()=>work.scrollIntoView());
+        return;
+      }
+    }
     const index=categories.findIndex(([,panel])=>'#'+panel.id===location.hash||panel.querySelector('[id="'+location.hash.slice(1).replace(/[^\w-]/g,'')+'"]'));
     if(index>=0){activate(index);requestAnimationFrame(()=>work.scrollIntoView());}
   };
-  activate(0);syncHash();window.addEventListener('hashchange',syncHash);
+  activate(0);window.addEventListener('hashchange',syncHash);
 
   // A native category picker leaves the browser tabs dedicated to individual projects.
   const categoryControl=document.createElement('label');
@@ -115,6 +141,8 @@ if(work&&moreWork&&designs){
     frame.querySelector('.work-next').addEventListener('click',()=>show(current+1));
     show(0);
   });
+  // Restore only after all project cards and tab controls have been constructed.
+  syncHash();syncCategory();
 }
 
 // The mobile sidebar mirrors the final section structure.

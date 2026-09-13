@@ -674,7 +674,7 @@ body{font-size:14px}.container{width:min(1160px,calc(100% - 44px))}
 .featured-card:hover{transform:translateY(-6px);border-color:#444449;box-shadow:0 35px 90px rgba(0,0,0,.45)}
 .featured-media{height:285px;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 35%,rgba(255,255,255,.08),transparent 55%),linear-gradient(145deg,#202022,#0a0a0b)}
 .featured-media>img{width:100%;height:100%;object-fit:contain;display:block;filter:brightness(.9)}
-.cdp-feature img,.pack-feature img,.lms-feature img,.portal-feature img,.meditrack-feature img{padding:22px;object-fit:contain}
+.cdp-feature img,.pack-feature img,.lms-feature img,.portal-feature img,.meditrack-feature img{padding:0;object-fit:contain}
 .tubaland-feature{background:radial-gradient(circle at 55% 35%,rgba(185,106,165,.12),transparent 45%),linear-gradient(145deg,#19191b,#09090a)}
 .tubaland-feature .phone{position:absolute;width:31%;height:88%;top:4%;left:10%;border:1px solid #333;border-radius:14px;overflow:hidden;box-shadow:0 18px 40px rgba(0,0,0,.7);transform:rotate(-7deg);background:#111}.tubaland-feature .phone img{width:100%;height:100%;object-fit:cover}.tubaland-feature .phone.second{left:34%;top:8%;transform:rotate(0);z-index:2}.tubaland-feature .phone.third{left:59%;top:13%;transform:rotate(7deg);z-index:1}
 .featured-copy{padding:20px 20px 22px;display:flex;flex-direction:column;flex:1}.featured-index{font:8px Arial,Helvetica,sans-serif;color:#777;letter-spacing:.1em;text-transform:uppercase}.featured-copy h3{font-size:1.55rem;letter-spacing:-.045em;margin:12px 0 8px}.featured-copy p{font-size:.74rem;line-height:1.7;color:#888;margin:0 0 16px}.featured-copy .tags{margin-top:auto}.featured-copy .tags span{font-size:8px;padding:6px 8px}.featured-link{display:inline-flex;align-self:flex-start;margin-top:18px;color:var(--lime);font-size:.7rem;font-weight:700;text-decoration:none}.featured-link:hover{text-decoration:underline}
@@ -1169,6 +1169,14 @@ html[data-theme="light"] .cert-carousel .carousel-item{background:linear-gradien
 #work .work-browser .featured-link{display:inline-flex;align-items:center;justify-content:space-between;gap:24px;align-self:flex-start;padding:13px 20px;margin-top:8px;border:0;border-radius:999px;background:var(--lime);color:var(--bg);font-size:.75rem}
 #work .work-browser .cdp-thumb-main{height:66%;width:67%}
 #work .work-browser .cdp-thumb img{object-fit:contain;background:var(--bg)}
+/* Layered academic previews use the same inset and screen proportions as Featured Work. */
+#work .work-browser .featured-media>img,
+#work .work-browser .cdp-thumb img{padding:0}
+#work .work-browser .academic-prototype-stack{display:flex!important;align-items:center;justify-content:center;overflow:hidden}
+#work .work-browser .academic-prototype-stack .cdp-thumb{background:var(--bg)}
+#work .work-browser .academic-prototype-stack .cdp-thumb-main{width:67%;height:66%}
+#work .work-browser .academic-prototype-stack .cdp-thumb-left,
+#work .work-browser .academic-prototype-stack .cdp-thumb-right{width:39%;height:48%;bottom:8%}
 @media(max-width:700px){
  .work-window-dots{padding:0 12px;gap:4px}.work-window-dots i{width:5px;height:5px}
  .project-tabs button{padding:13px 22px;font-size:.7rem}.work-browser-top{min-height:54px}
@@ -1477,3 +1485,42 @@ body>.noise{display:none}
 main>section{position:relative;isolation:isolate}
 main>section::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:var(--page-grain);background-repeat:repeat;background-size:180px 180px;opacity:.065}
 html[data-theme="light"] main>section::before{opacity:.045}
+
+/* Consistent breathing room and layered depth for project previews. */
+#work :is(#featured-work,#more-work) .work-browser article{
+  padding:26px;gap:30px;align-items:center;
+}
+#work :is(#featured-work,#more-work) .work-browser .featured-media{
+  height:380px;min-height:0;min-width:0;border:1px solid var(--line);border-radius:18px;
+  background:radial-gradient(ellipse at 50% 38%,rgba(185,106,165,.10),transparent 70%),var(--panel2);
+  box-shadow:inset 0 1px 0 var(--depth-edge),0 6px 12px rgba(0,0,0,.10),0 16px 32px var(--depth-shadow);
+}
+#work :is(#featured-work,#more-work) .work-browser :is(.spotlight-copy,.featured-copy){padding:16px 8px 16px 0}
+#work :is(#featured-work,#more-work) .work-browser .cdp-thumb{
+  border:1px solid rgba(255,255,255,.16);border-radius:10px;
+  box-shadow:0 2px 4px rgba(0,0,0,.22),0 12px 22px rgba(0,0,0,.30),0 24px 38px rgba(0,0,0,.20);
+}
+#work :is(#featured-work,#more-work) .work-browser .cdp-thumb-main{
+  width:66%;height:auto;aspect-ratio:16/10;top:18%;left:17%;transform:none;z-index:3;
+}
+#work :is(#featured-work,#more-work) .work-browser :is(.cdp-thumb-left,.cdp-thumb-right){
+  width:42%;height:auto;aspect-ratio:16/10;bottom:15%;
+}
+#work :is(#featured-work,#more-work) .work-browser .cdp-thumb-left{left:5%;transform:rotate(-6deg)}
+#work :is(#featured-work,#more-work) .work-browser .cdp-thumb-right{right:5%;transform:rotate(6deg)}
+#work :is(#featured-work,#more-work) .work-browser .cdp-thumb img{padding:0;object-position:center;transform:none}
+#work #featured-work .work-browser .tubaland-feature .phone{
+  width:28%;height:76%;top:12%;left:7%;border-color:rgba(255,255,255,.16);
+  box-shadow:0 3px 6px rgba(0,0,0,.2),0 16px 28px rgba(0,0,0,.38);
+}
+#work #featured-work .work-browser .tubaland-feature .phone.second{width:30%;height:82%;left:35%;top:8%}
+#work #featured-work .work-browser .tubaland-feature .phone.third{left:65%;top:12%}
+@media(max-width:900px) and (min-width:701px){
+  #work :is(#featured-work,#more-work) .work-browser article{padding:20px;gap:22px}
+  #work :is(#featured-work,#more-work) .work-browser .featured-media{height:330px}
+}
+@media(max-width:700px){
+  #work :is(#featured-work,#more-work) .work-browser article{padding:18px;gap:20px}
+  #work :is(#featured-work,#more-work) .work-browser .featured-media{height:clamp(260px,65vw,360px);border-radius:14px}
+  #work :is(#featured-work,#more-work) .work-browser :is(.spotlight-copy,.featured-copy){padding:4px 4px 10px}
+}
