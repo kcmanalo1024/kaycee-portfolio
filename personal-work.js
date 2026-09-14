@@ -4,6 +4,24 @@ function createPersonalWork(){
   const timplado=(number,title,description)=>({src:base+'timplado/Green Simple Morning Routine Carousel Instagram Post - '+number+'.png',title,description});
   const poster=(number,title,description)=>({src:base+'posters/Copy of Tubaland CV - '+number+'.png',title,description});
   const projects=[
+    {name:'Social Media Carousel',type:'APPLICATION DESIGN EXERCISE',intro:'A 12-slide carousel submitted for Tailor Made Outsourcing’s Graphic Designer – Social Media application task. The brief asked applicants to create a social media post using the company’s existing Instagram branding and aesthetic. My response develops that brief into a coordinated carousel, using bold typography, structured service information, and a consistent color palette. Presented here as an application submission.',images:[
+      ...[
+        ['Build a Better Team','An opening hook combining oversized typography with yellow callouts to introduce the carousel.'],
+        ['What We Do','A service introduction pairing a concise headline with a photograph-led composition.'],
+        ['More Partnership','A browser-inspired panel groups the key messages into a scannable layout.'],
+        ['What Can You Outsource?','A checklist presents the range of roles with a clear reading order.'],
+        ['Scout, Screen, Secure','A photo collage and magnifying-glass motif introduce the recruitment process.'],
+        ['Quality, Not Quantity','A structured checklist breaks the screening process into individual steps.'],
+        ['Clear Rates Upfront','A pinned-note layout draws attention to the rate information in the submission.'],
+        ['One Role, One Placement Fee','Three coordinated cards make the submitted pricing tiers easy to compare.'],
+        ['You Choose the Person','A portrait-led composition highlights the candidate-selection message.'],
+        ['The Right Fit Matters','A handshake image and framed message emphasize the replacement-policy content.'],
+        ['Talent Without the Contractor Admin','A document collage and yellow pricing panel organize the optional-service message.'],
+        ['Good Work Starts Here','The closing slide returns to the bold typographic style and finishes with a call to action.']
+      ].map(([title,description],index)=>({src:'assets/images/social-application/'+String(index+1).padStart(2,'0')+'_Social Media Post.webp',title:'Slide '+String(index+1).padStart(2,'0')+' — '+title,description})),
+      {src:'assets/images/social-application/Phone Mock-up.webp',title:'Phone Mockup',description:'A presentation mockup showing how the carousel artwork could appear on a social media profile.'},
+      {src:'assets/images/social-application/Fonts and Color Palette.webp',title:'Typography & Color Palette',description:'Georgia, DM Sans, and Syne paired with cream, black, red, and yellow to create a consistent visual language across the slides.'}
+    ]},
     {name:'Timplado',type:'FICTIONAL BRAND',intro:'A fictional café brand exploring product presentation, typography, and a cohesive visual identity through menus, promotional graphics, and launch concepts.',images:[
       timplado(5,'Coffee Break','A product-led brand concept pairing an iced coffee visual with bold, repeated typography and a warm café palette.'),
       timplado(6,'Menu','A menu concept arranging the drink range into a clear, consistent product grid.'),
@@ -28,7 +46,7 @@ function createPersonalWork(){
     ]}
   ];
   const panel=document.createElement('div');panel.id='personal-concept';
-  panel.innerHTML='<div class="personal-intro"><h3>Personal &amp; Concept Design</h3><p>Self-initiated projects exploring branding, products, typography, and visual storytelling.</p></div><div class="work-browser personal-browser"><div class="work-browser-top"><span class="work-window-dots" aria-hidden="true"><i></i><i></i><i></i></span><div class="project-tabs" role="tablist" aria-label="Personal and concept projects"></div></div><div class="work-browser-toolbar"><button type="button" class="work-prev" aria-label="Previous project">‹</button><button type="button" class="work-next" aria-label="Next project">›</button><div class="work-address"><span aria-hidden="true">▣</span><span class="work-address-title"></span></div></div><div class="personal-projects"></div></div>';
+  panel.innerHTML='<div class="personal-intro"><h3>Personal &amp; Concept Design</h3><p>Independent projects and application design exercises exploring branding, products, typography, and visual storytelling.</p></div><div class="work-browser personal-browser"><div class="work-browser-top"><span class="work-window-dots" aria-hidden="true"><i></i><i></i><i></i></span><div class="project-tabs" role="tablist" aria-label="Personal and concept projects"></div></div><div class="work-browser-toolbar"><button type="button" class="work-prev" aria-label="Previous project">‹</button><button type="button" class="work-next" aria-label="Next project">›</button><div class="work-address"><span aria-hidden="true">▣</span><span class="work-address-title"></span></div></div><div class="personal-projects"></div></div>';
   const tabs=panel.querySelector('.project-tabs'),cards=[];
   let current=0;
   const show=(index,focus=false)=>{
@@ -45,6 +63,12 @@ function createPersonalWork(){
     const card=document.createElement('article');card.className='personal-project';card.id='personal-project-'+index;card.setAttribute('role','tabpanel');card.setAttribute('aria-labelledby',tab.id);
     card.innerHTML='<div class="personal-project-layout"><div class="personal-art"><button type="button" class="internship-preview personal-preview" data-lightbox=""><img alt=""><span>View design ↗</span></button></div><div class="internship-copy"><span class="internship-type"></span><h3></h3><p class="personal-summary"></p><div class="personal-art-caption"><h4></h4><p></p></div><span class="personal-image-count" aria-live="polite"></span></div></div><div class="personal-gallery" role="group" aria-label="Choose an image"></div>';
     card.querySelector('.internship-type').textContent=project.type;
+    // All four projects in this collection were created in September 2026.
+    const created=document.createElement('time');
+    created.dateTime='2026-09';
+    created.textContent='Created September 2026';
+    created.style.cssText='display:block;margin-top:.75rem;font-size:.75rem;color:var(--muted);line-height:1.5';
+    card.querySelector('.internship-type').after(created);
     card.querySelector('h3').textContent=project.name;
     card.querySelector('.personal-summary').textContent=project.intro;
     const gallery=card.querySelector('.personal-gallery'),preview=card.querySelector('.personal-preview');
