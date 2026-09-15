@@ -1483,8 +1483,8 @@ body>.back-to-top.is-visible:active{transform:translateY(2px);box-shadow:inset 0
 /* Replace the old full-screen noise layer with background-only texture. */
 body>.noise{display:none}
 main>section{position:relative;isolation:isolate}
-main>section::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:var(--page-grain);background-repeat:repeat;background-size:11.25rem 11.25rem;opacity:.065}
-html[data-theme="light"] main>section::before{opacity:.045}
+main>section::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:var(--page-grain);background-repeat:repeat;background-size:11.25rem 11.25rem;opacity:.10}
+html[data-theme="light"] main>section::before{opacity:.065}
 
 /* Personal projects keep the shared browser tabs and a gallery within each project. */
 .personal-intro{margin:0 0 1.625rem}
