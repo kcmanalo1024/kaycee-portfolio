@@ -37,7 +37,7 @@ if(work&&moreWork&&designs){
   featured.id='featured-work';
   featured.append(work.querySelector('.spotlight-grid'));
   const personalWork=createPersonalWork();
-  const categories=[['Featured Work',featured],['Academic Work',moreWork],['Internship Graphic Design',designs],['Personal & Concept Design',personalWork]];
+  const categories=[['Featured Work',featured],['Academic Work',moreWork],['Internship Graphic Design',designs],['Personal & Concept Design',personalWork],['Photo Editing',createPhotoEditing()]];
   const tablist=document.createElement('div');
   tablist.className='work-tabs';
   tablist.setAttribute('role','tablist');

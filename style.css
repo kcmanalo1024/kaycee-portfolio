@@ -1576,3 +1576,59 @@ html[data-theme="light"] main>section::before{opacity:.065}
    Rem-based dimensions keep text, controls and artwork in proportion.
    Preserve mobile/tablet breakpoints and cap growth on very large displays. */
 html{font-size:clamp(100%,1.171303vw,200%)}
+
+/* Photo editing: aligned originals and edits with a quiet crossfade. */
+.photo-editing-intro{margin-bottom:1.625rem}
+.photo-editing-intro h3{font:400 clamp(1.6rem,3vw,2.2rem) var(--font-display);margin:0 0 .625rem}
+.photo-editing-intro p{color:var(--muted);font-size:.85rem;margin:0}
+.photo-editing-projects{min-width:0}
+#work .photo-browser .photo-comparison{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:clamp(1.75rem,4vw,3.5rem);padding:1.75rem;border:0;border-radius:0;background:transparent}
+.photo-browser .photo-comparison[hidden]{display:none}
+.photo-browser .photo-comparison-stage{height:30rem;aspect-ratio:auto;border:1px solid var(--line);border-radius:.75rem;overflow:hidden}
+.photo-browser .photo-comparison-copy{min-width:0;padding:.5rem 0}
+.photo-browser .photo-navigation{margin:0;padding:0 1.75rem 1.75rem}
+#work .photo-browser .project-tabs button{flex-basis:auto;width:auto;min-width:11.5rem;max-width:none}
+.photo-comparison{min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:1rem;background:var(--panel)}
+.photo-comparison-stage{position:relative;aspect-ratio:4/5;background:var(--panel2);isolation:isolate}
+#work .photo-comparison-stage img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain;object-position:center;border-radius:0;transform:none;filter:none}
+#work .photo-comparison-stage .photo-after{opacity:0;transition:opacity .35s ease;will-change:opacity}
+#work .photo-comparison.is-after .photo-after{opacity:1}
+.photo-comparison-copy{padding:1.25rem}
+.photo-comparison-copy h4{font:400 1.35rem/1.3 var(--font-display);margin:0 0 .625rem;color:var(--text)}
+.photo-comparison-copy>p{font-size:.78rem;line-height:1.7;color:var(--muted);margin:0 0 1.125rem}
+.photo-editing-label{display:block;margin-bottom:.875rem;font-size:.6rem;font-weight:600;letter-spacing:.14em;color:var(--lime)}
+.photo-comparison-copy .photo-techniques{font-size:.74rem;margin-bottom:1.25rem}
+.photo-comparison-copy .photo-description{font-size:.875rem;line-height:1.85;margin-bottom:1.25rem;color:var(--text);max-width:38rem}
+.photo-comparison-copy .photo-editing-credit{font-size:.72rem;margin-bottom:1.5rem;padding-top:1rem;border-top:1px solid var(--line)}
+.photo-comparison-controls{display:flex;align-items:center;flex-wrap:wrap;gap:.75rem}
+.photo-toggle{display:inline-flex;gap:.25rem;padding:.25rem;border:1px solid var(--line);border-radius:2rem}
+.photo-toggle button{min-height:2.5rem;padding:.625rem 1.125rem;border:0;border-radius:2rem;background:transparent;color:var(--muted);font:600 .68rem/1 var(--font-body);letter-spacing:.07em;cursor:pointer}
+.photo-toggle button[aria-pressed="true"]{background:var(--lime);color:#171017}
+.photo-toggle button:hover{color:var(--text)}
+.photo-toggle button[aria-pressed="true"]:hover{color:#171017}
+.photo-toggle button:focus-visible{outline:2px solid var(--text);outline-offset:2px}
+.photo-comparison-status{font-size:.65rem;color:var(--muted)}
+@media(max-width:700px){#work .photo-browser .photo-comparison{grid-template-columns:1fr;gap:1.25rem;padding:1.125rem}.photo-browser .photo-comparison-stage{height:auto;aspect-ratio:4/5}.photo-browser .photo-navigation{padding:0 1.125rem 1.125rem}}
+@media(prefers-reduced-motion:reduce){#work .photo-comparison-stage .photo-after{transition:none}}
+
+/* Subtle tactile depth for previous/next and photo comparison controls. */
+body :is(.personal-prev,.personal-next,.work-prev,.work-next,.learn-prev,.learn-next,.carousel-arrow,.design-nav,.photo-toggle button){
+ background-image:linear-gradient(180deg,rgba(255,255,255,.09),transparent 60%,rgba(0,0,0,.05));
+ box-shadow:inset 0 1px 0 var(--depth-edge),inset 0 -1px 0 rgba(0,0,0,.12),0 2px 0 rgba(0,0,0,.16),0 3px 6px var(--depth-shadow);
+ transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease;
+}
+@media(hover:hover) and (pointer:fine){
+ body :is(.personal-prev,.personal-next,.work-prev,.work-next,.learn-prev,.learn-next,.carousel-arrow,.design-nav,.photo-toggle button):hover:not(:disabled){
+  transform:translateY(-1px);
+  box-shadow:inset 0 1px 0 var(--depth-edge),inset 0 -1px 0 rgba(0,0,0,.12),0 2px 0 rgba(0,0,0,.16),0 4px 7px var(--depth-shadow);
+ }
+}
+body :is(.personal-prev,.personal-next,.work-prev,.work-next,.learn-prev,.learn-next,.carousel-arrow,.design-nav,.photo-toggle button):active:not(:disabled){
+ transform:translateY(1px);
+ box-shadow:inset 0 1px 2px rgba(0,0,0,.18),0 1px 2px var(--depth-shadow);
+}
+body :is(.personal-prev,.personal-next,.work-prev,.work-next,.learn-prev,.learn-next,.carousel-arrow,.design-nav,.photo-toggle button):disabled{background-image:none;box-shadow:none;transform:none}
+@media(prefers-reduced-motion:reduce){
+ body :is(.personal-prev,.personal-next,.work-prev,.work-next,.learn-prev,.learn-next,.carousel-arrow,.design-nav,.photo-toggle button){transition:none}
+ body :is(.personal-prev,.personal-next,.work-prev,.work-next,.learn-prev,.learn-next,.carousel-arrow,.design-nav,.photo-toggle button):is(:hover,:active):not(:disabled){transform:none}
+}

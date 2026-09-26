@@ -54,7 +54,7 @@ function createPersonalWork(){
     ]}
   ];
   const panel=document.createElement('div');panel.id='personal-concept';
-  panel.innerHTML='<div class="personal-intro"><h3>Personal &amp; Concept Design</h3><p>Independent projects and application design exercises exploring branding, products, typography, and visual storytelling.</p></div><div class="work-browser personal-browser"><div class="work-browser-top"><span class="work-window-dots" aria-hidden="true"><i></i><i></i><i></i></span><div class="project-tabs" role="tablist" aria-label="Personal and concept projects"></div></div><div class="work-browser-toolbar"><button type="button" class="work-prev" aria-label="Previous project">‹</button><button type="button" class="work-next" aria-label="Next project">›</button><div class="work-address"><span aria-hidden="true">▣</span><span class="work-address-title"></span></div></div><div class="personal-projects"></div></div>';
+  panel.innerHTML='<div class="work-browser personal-browser"><div class="work-browser-top"><span class="work-window-dots" aria-hidden="true"><i></i><i></i><i></i></span><div class="project-tabs" role="tablist" aria-label="Personal and concept projects"></div></div><div class="work-browser-toolbar"><button type="button" class="work-prev" aria-label="Previous project">‹</button><button type="button" class="work-next" aria-label="Next project">›</button><div class="work-address"><span aria-hidden="true">▣</span><span class="work-address-title"></span></div></div><div class="personal-projects"></div></div>';
   const tabs=panel.querySelector('.project-tabs'),cards=[];
   let current=0;
   const show=(index,focus=false)=>{
