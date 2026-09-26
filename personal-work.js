@@ -61,7 +61,7 @@ function createPersonalWork(){
     tab.addEventListener('keydown',event=>{const next=event.key==='ArrowRight'?index+1:event.key==='ArrowLeft'?index-1:event.key==='Home'?0:event.key==='End'?projects.length-1:null;if(next!==null){event.preventDefault();show(next,true);}});
     tabs.append(tab);
     const card=document.createElement('article');card.className='personal-project';card.id='personal-project-'+index;card.setAttribute('role','tabpanel');card.setAttribute('aria-labelledby',tab.id);
-    card.innerHTML='<div class="personal-project-layout"><div class="personal-art"><button type="button" class="internship-preview personal-preview" data-lightbox=""><img alt=""><span>View design ↗</span></button></div><div class="internship-copy"><span class="internship-type"></span><h3></h3><p class="personal-summary"></p><div class="personal-art-caption"><h4></h4><p></p></div><span class="personal-image-count" aria-live="polite"></span></div></div><div class="personal-gallery" role="group" aria-label="Choose an image"></div>';
+    card.innerHTML='<div class="personal-project-layout"><div class="personal-art"><button type="button" class="internship-preview personal-preview" data-lightbox=""><img alt=""><span>View design ↗</span></button></div><div class="internship-copy"><span class="internship-type"></span><h3></h3><p class="personal-summary"></p><div class="personal-art-caption"><h4></h4><p></p></div></div></div><div class="personal-gallery" role="group" aria-label="Design navigation"><button type="button" class="personal-prev" aria-label="Previous design">‹</button><button type="button" class="personal-next" aria-label="Next design">›</button><span class="personal-image-count" aria-live="polite" aria-atomic="true"></span></div>';
     card.querySelector('.internship-type').textContent=project.type;
     // All four projects in this collection were created in September 2026.
     const created=document.createElement('time');
@@ -72,19 +72,19 @@ function createPersonalWork(){
     card.querySelector('h3').textContent=project.name;
     card.querySelector('.personal-summary').textContent=project.intro;
     const gallery=card.querySelector('.personal-gallery'),preview=card.querySelector('.personal-preview');
+    let selectedImage=0;
     const selectImage=(imageIndex)=>{
+      imageIndex=(imageIndex+project.images.length)%project.images.length;
+      selectedImage=imageIndex;
       const item=project.images[imageIndex];
       preview.dataset.lightbox=item.src;preview.setAttribute('aria-label','View design: '+item.title);
       preview.querySelector('img').src=item.src;preview.querySelector('img').alt=project.name+' — '+item.title;
       card.querySelector('h4').textContent=item.title;card.querySelector('.personal-art-caption p').textContent=item.description;
-      card.querySelector('.personal-image-count').textContent=String(imageIndex+1).padStart(2,'0')+' / '+String(project.images.length).padStart(2,'0')+' designs';
-      [...gallery.children].forEach((button,i)=>button.setAttribute('aria-pressed',String(i===imageIndex)));
+      card.querySelector('.personal-image-count').textContent=String(imageIndex+1).padStart(2,'0')+' / '+String(project.images.length).padStart(2,'0');
     };
-    project.images.forEach((item,imageIndex)=>{
-      const button=document.createElement('button');button.type='button';button.setAttribute('aria-label','Show '+item.title);button.title=item.title;
-      const image=document.createElement('img');image.src=item.src;image.alt='';image.loading='lazy';image.decoding='async';button.append(image);
-      button.addEventListener('click',()=>selectImage(imageIndex));gallery.append(button);
-    });
+    gallery.querySelector('.personal-prev').addEventListener('click',()=>selectImage(selectedImage-1));
+    gallery.querySelector('.personal-next').addEventListener('click',()=>selectImage(selectedImage+1));
+    gallery.querySelectorAll('button').forEach(button=>{button.disabled=project.images.length<2;});
     selectImage(0);cards.push(card);panel.querySelector('.personal-projects').append(card);
   });
   panel.querySelector('.work-prev').addEventListener('click',()=>show(current-1));

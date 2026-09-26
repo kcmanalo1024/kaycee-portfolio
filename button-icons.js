@@ -18,7 +18,7 @@
   const name=/back/i.test(label)?'back':/resume/i.test(label)?'document':/connect|contact|email/i.test(label)?'mail':/case study|project overview/i.test(label)?'document':/certificate|design/i.test(label)?'expand':/gallery/i.test(label)?'gallery':/work/i.test(label)?'work':'external';
   const text=document.createElement('span');text.textContent=label;el.replaceChildren(icon(name),text);el.classList.add('icon-action');
  });
- const controls=[['.work-prev,.learn-prev,.carousel-arrow.prev,.design-nav.prev','left','Previous item'],['.work-next,.learn-next,.carousel-arrow.next,.design-nav.next','right','Next item'],['#menu-btn','menu','Open menu'],['#menu-close,#close-lightbox,#tb-close','close','Close']];
+ const controls=[['.personal-prev,.work-prev,.learn-prev,.carousel-arrow.prev,.design-nav.prev','left','Previous item'],['.personal-next,.work-next,.learn-next,.carousel-arrow.next,.design-nav.next','right','Next item'],['#menu-btn','menu','Open menu'],['#menu-close,#close-lightbox,#tb-close','close','Close']];
  controls.forEach(([selector,name,label])=>document.querySelectorAll(selector).forEach(el=>{if(!el.hasAttribute('aria-label'))el.setAttribute('aria-label',label);el.replaceChildren(icon(name));el.classList.add('icon-control');}));
  document.querySelectorAll('.work-address>span[aria-hidden="true"]').forEach((el)=>el.replaceChildren(icon(el.textContent.includes('↗')?'external':'document')));
 })();
