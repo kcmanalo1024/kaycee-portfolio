@@ -217,17 +217,54 @@ const corporateCaption=document.querySelector('.design-caption');
 if(corporateCaption){const label=corporateCaption.querySelector('em'),title=corporateCaption.querySelector('h2'),description=corporateCaption.querySelector('p');if(label)label.textContent='CLIENT / CORPORATE WORK';if(title)title.textContent='Unisea Manila Information Technology Corp.';if(description)description.textContent="Corporate materials created during my internship based on the company's established branding and visual identity. Selected materials were reviewed and approved by my OJT supervisor.";}
 
 if(designs){
+  const internshipSummary="During my internship from February to July 2026, my supervisor assigned me to lead the graphic design work. I created recruitment materials, standees, and a desktop wallpaper using Unisea’s existing images, logos, and branding, with direction from my supervisor.";
   const internshipDesigns=[
-    ['A4 Blank Template (Building BG).png','Hiring template','A hiring template created during my internship, designed to present recruitment information in a clear, professional layout.'],
-    ['C1_MDL.png','Standee design','A standee created during my internship, arranging corporate information in a tall display format with a clear visual hierarchy.'],
-    ['C1_MWL.png','Standee design','A standee created during my internship, arranging corporate information in a tall display format with a clear visual hierarchy.'],
-    ['D1_MDL.png','Standee design','A standee created during my internship, arranging corporate information in a tall display format with a clear visual hierarchy.'],
-    ['D1_MWL.png','Standee design','A standee created during my internship, arranging corporate information in a tall display format with a clear visual hierarchy.'],
-    ['H1_MDL.png','Standee design','A standee created during my internship, arranging corporate information in a tall display format with a clear visual hierarchy.'],
-    ['H1_MWL.png','Standee design','A standee created during my internship, arranging corporate information in a tall display format with a clear visual hierarchy.'],
-    ['I1_MWL.png','Standee design','A standee created during my internship, arranging corporate information in a tall display format with a clear visual hierarchy.'],
-    ['UNISEA_DESKTOP WALLPAPER (1920 X 1080).png','Desktop wallpaper','A branded desktop wallpaper featuring the company logo and maritime service areas, adapted to a widescreen format for a consistent workplace identity.']
-  ];
+    [
+        "A4 Blank Template (Building BG).png",
+        "Hiring template",
+        "A hiring template created during my internship, designed to present recruitment information in a clear, professional layout. I used an image of the Unisea Manila building as the background, lowering its opacity so it remained visible without competing with the recruitment details."
+    ],
+    [
+        "C1_MDL.png",
+        "Standee Design",
+        "A standee created during my internship, arranging corporate information in a tall display format with a clear visual hierarchy. I turned Unisea’s existing ship images into silhouettes, paired them with the company’s primary logo, and added a brief company description."
+    ],
+    [
+        "C1_MWL.png",
+        "Standee Design",
+        "A standee created during my internship, arranging corporate information in a tall display format with a clear visual hierarchy. This variation follows the ship-silhouette concept of Internship Design 02, using the white version of the company logo."
+    ],
+    [
+        "D1_MDL.png",
+        "Standee Design",
+        "A standee created during my internship, arranging corporate information in a tall display format with a clear visual hierarchy. I adapted the earlier standee concept into a white version, using the company’s primary logo."
+    ],
+    [
+        "D1_MWL.png",
+        "Standee Design",
+        "A standee created during my internship, arranging corporate information in a tall display format with a clear visual hierarchy. This variation uses a white standee design with the white version of the company logo."
+    ],
+    [
+        "H1_MDL.png",
+        "Standee Design",
+        "A standee created during my internship, arranging corporate information in a tall display format with a clear visual hierarchy. Following my OJT supervisor’s direction, I developed a more graphic-led design using the company’s existing branding to keep it consistent with its visual identity."
+    ],
+    [
+        "H1_MWL.png",
+        "Standee Design",
+        "A standee created during my internship, arranging corporate information in a tall display format with a clear visual hierarchy. This variation develops the graphic-led approach of Internship Design 06 into a dark theme, using the white version of the company logo."
+    ],
+    [
+        "I1_MWL.png",
+        "Standee Design",
+        "A standee created during my internship, arranging corporate information in a tall display format with a clear visual hierarchy. I explored an alternative dark-themed layout, using the white version of the company logo and adding a brief company description."
+    ],
+    [
+        "UNISEA_DESKTOP WALLPAPER (1920 X 1080).png",
+        "Desktop Wallpaper",
+        "A branded desktop wallpaper featuring the company logo and maritime service areas, adapted to a widescreen format for a consistent workplace identity. I used the company’s existing branding to create a minimalist design."
+    ]
+];
   const container=designs.querySelector('.container');
   const frame=document.createElement('div');frame.className='work-browser internship-browser';
   frame.innerHTML='<div class="work-browser-top"><span class="work-window-dots" aria-hidden="true"><i></i><i></i><i></i></span><div class="project-tabs" role="tablist" aria-label="Internship graphic designs"></div></div><div class="work-browser-toolbar"><button type="button" class="work-prev" aria-label="Previous internship design">‹</button><button type="button" class="work-next" aria-label="Next internship design">›</button><div class="work-address"><span aria-hidden="true">▣</span><span class="work-address-title"></span></div></div>';
@@ -246,7 +283,9 @@ if(designs){
     const copy=document.createElement('div');copy.className='internship-copy';
     const label=document.createElement('span');label.className='internship-type';label.textContent=type;
     const heading=document.createElement('h3');heading.textContent=title;
-    const body=document.createElement('p');body.textContent=description;copy.append(label,heading,body);
+    const created=document.createElement('p');created.className='internship-created';created.textContent='Created February – July 2026';
+    const summary=document.createElement('p');summary.textContent=internshipSummary;
+    const body=document.createElement('p');body.textContent=description;copy.append(label,created,summary,heading,body);
     if(index===0){const note=document.createElement('aside');note.className='internship-note';note.innerHTML='<strong>Confidentiality note</strong><p>Some information in this hiring template has been blocked out to protect the company’s confidential details.</p>';copy.append(note);}
     slide.append(preview,copy);track.append(slide);
   });
