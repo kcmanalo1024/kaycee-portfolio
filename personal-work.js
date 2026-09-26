@@ -22,6 +22,14 @@ function createPersonalWork(){
       {src:'assets/images/social-application/Phone Mock-up.webp',title:'Phone Mockup',description:'A presentation mockup showing how the carousel artwork could appear on a social media profile.'},
       {src:'assets/images/social-application/Fonts and Color Palette.webp',title:'Typography & Color Palette',description:'Georgia, DM Sans, and Syne paired with cream, black, red, and yellow to create a consistent visual language across the slides.'}
     ]},
+    {name:'LUMA',type:'PERSONAL SKINCARE BRAND CONCEPT',intro:'LUMA is my personal branding concept for a fictional skincare brand. I created the logos and visual identity, then developed packaging presentations and campaign designs around a soft neutral palette, refined typography, and a simple approach to everyday skincare. This self-initiated project explores how one brand identity can carry across a complete collection of promotional visuals.',images:[
+      {src:base+'luma/Luma_BrandingKit.webp',title:'Brand Identity & Packaging',description:'The foundation of my LUMA concept: an original circular logo and secondary wordmark, a neutral color palette, and ALTA and TT Chocolates typography. Packaging mockups bring these elements together across the skincare range.'},
+      {src:base+'luma/Luma_Social Media Design.webp',title:'Social Media — LUMA Skin',description:'A product-focused social media concept presenting the hydrating serum alongside its packaging. Generous spacing, a soft cloud backdrop, and stone textures give the original branding a calm, polished setting, while a vertical icon column organizes the product messaging.'},
+      {src:base+'luma/Luma_Advertisement.webp',title:'Hydrating Serum Advertisement',description:'An advertising concept built around an oversized serum bottle and flowing golden liquid. The headline, supporting icons, and rounded call-to-action create a clear reading order while the warm tones carry the LUMA identity through the layout.'},
+      {src:base+'luma/Luma_Marketing Graphic.webp',title:'Daily Skincare Routine',description:'A marketing graphic introducing the cleanser, serum, and moisturizer as a coordinated skincare routine. Product callouts and a three-step guide organize the information, with stone surfaces and soft neutrals connecting the layout to the wider brand concept.'},
+      {src:base+'luma/Luma_PosterDesign.webp',title:'Your Daily Glow — Brand Poster',description:'A promotional poster bringing the full LUMA range together in a layered product composition. Golden liquid, natural textures, and a bold glow-focused headline add movement and emphasis while keeping the packaging and original logos central to the design.'},
+      {src:base+'luma/Luma_Skincare Benefits Campaign.webp',title:'Skincare Benefits Campaign Concept',description:'A campaign layout exploring how a skincare brand could organize benefit-focused messaging. A central portrait, circular skin-detail callouts, and a serum feature guide the eye through the composition. The benefit statements and percentages are illustrative concept copy, not verified product results.'}
+    ]},
     {name:'Timplado',type:'FICTIONAL BRAND',intro:'A fictional café brand exploring product presentation, typography, and a cohesive visual identity through menus, promotional graphics, and launch concepts.',images:[
       timplado(5,'Coffee Break','A product-led brand concept pairing an iced coffee visual with bold, repeated typography and a warm café palette.'),
       timplado(6,'Menu','A menu concept arranging the drink range into a clear, consistent product grid.'),
@@ -63,12 +71,14 @@ function createPersonalWork(){
     const card=document.createElement('article');card.className='personal-project';card.id='personal-project-'+index;card.setAttribute('role','tabpanel');card.setAttribute('aria-labelledby',tab.id);
     card.innerHTML='<div class="personal-project-layout"><div class="personal-art"><button type="button" class="internship-preview personal-preview" data-lightbox=""><img alt=""><span>View design ↗</span></button></div><div class="internship-copy"><span class="internship-type"></span><h3></h3><p class="personal-summary"></p><div class="personal-art-caption"><h4></h4><p></p></div></div></div><div class="personal-gallery" role="group" aria-label="Design navigation"><button type="button" class="personal-prev" aria-label="Previous design">‹</button><button type="button" class="personal-next" aria-label="Next design">›</button><span class="personal-image-count" aria-live="polite" aria-atomic="true"></span></div>';
     card.querySelector('.internship-type').textContent=project.type;
-    // All four projects in this collection were created in September 2026.
+    // Preserve the existing project dates; LUMA has no supplied creation date.
+    if(project.name!=='LUMA'){
     const created=document.createElement('time');
     created.dateTime='2026-09';
     created.textContent='Created September 2026';
     created.style.cssText='display:block;margin-top:.75rem;font-size:.75rem;color:var(--muted);line-height:1.5';
     card.querySelector('.internship-type').after(created);
+    }
     card.querySelector('h3').textContent=project.name;
     card.querySelector('.personal-summary').textContent=project.intro;
     const gallery=card.querySelector('.personal-gallery'),preview=card.querySelector('.personal-preview');
