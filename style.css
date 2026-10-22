@@ -1506,6 +1506,23 @@ html[data-theme="light"] main>section::before{opacity:.065}
 .personal-gallery button:focus-visible,.personal-preview:focus-visible{outline:2px solid var(--lime);outline-offset:0.25rem}
 @media(max-width:700px){#work .personal-browser .personal-project{padding:1.125rem}.personal-project-layout{grid-template-columns:1fr;gap:1.25rem}#work .personal-preview img{height:20.625rem}}
 
+/* Freelance deliverables share the portfolio browser and full-size preview controls. */
+.freelance-intro>.internship-type{display:block;margin-bottom:12px}
+.freelance-intro p{max-width:850px}
+#work .freelance-browser .freelance-project{display:block;padding:30px;background:transparent}
+.freelance-copy{max-width:850px;padding:4px 0 24px}
+.freelance-copy h3{margin:14px 0 16px}
+.freelance-comparison+.freelance-comparison{margin-top:30px;padding-top:26px;border-top:1px solid var(--line)}
+.freelance-comparison h4{font:400 1.4rem var(--font-display);margin:0 0 20px}
+.freelance-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.freelance-pair figure{margin:0;min-width:0}
+.freelance-pair figcaption{margin:0 0 12px;color:var(--lime);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase}
+#work .freelance-preview img{height:360px;width:100%;object-fit:contain}
+.freelance-privacy{margin:0 0 28px}
+.freelance-privacy p{color:var(--muted);font-size:.82rem;line-height:1.8;margin:10px 0 0}
+.freelance-preview:focus-visible{outline:2px solid var(--lime);outline-offset:4px}
+@media(max-width:700px){#work .freelance-browser .freelance-project{padding:20px}.freelance-pair{grid-template-columns:1fr;gap:24px}#work .freelance-preview img{height:320px}}
+
 /* Karibok uses the supplied branding artwork while the product is in development. */
 #work #featured-work .work-browser .karibok-media{display:flex;align-items:center;justify-content:center}
 #work #featured-work .work-browser .karibok-media img{width:100%;height:100%;object-fit:contain;object-position:center;padding:0;filter:none;transform:none}
